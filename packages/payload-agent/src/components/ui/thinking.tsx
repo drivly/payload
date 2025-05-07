@@ -9,7 +9,12 @@ function ThinkingDotsAnimation() {
       {[...Array(3)].map((_, i) => (
         <div
           key={i}
-          className={cn('bg-primary h-2 w-2 rounded-full', 'animate-[thinking_1.4s_ease-in-out_infinite]', i === 1 && 'animation-delay-200', i === 2 && 'animation-delay-400')}
+          className={cn(
+            'bg-primary h-2 w-2 rounded-full',
+            'animate-[thinking_1.4s_ease-in-out_infinite]',
+            i === 1 && 'animation-delay-200',
+            i === 2 && 'animation-delay-400'
+          )}
         />
       ))}
     </div>
@@ -18,7 +23,9 @@ function ThinkingDotsAnimation() {
 
 // 2. Typing Cursor Effect
 function ThinkingCursorEffect() {
-  return <div className='bg-primary h-4 w-2 animate-[cursor_0.8s_step-end_infinite]' />
+  return (
+    <div className='bg-primary h-4 w-2 animate-[cursor_0.8s_step-end_infinite]' />
+  )
 }
 
 // 3. Circular Loading - dots moving in a circle
@@ -28,7 +35,10 @@ function ThinkingCircularDots() {
       {[...Array(8)].map((_, i) => (
         <div
           key={i}
-          className={cn('bg-primary absolute h-1.5 w-1.5 rounded-full', 'animate-[circular_1.2s_linear_infinite]')}
+          className={cn(
+            'bg-primary absolute h-1.5 w-1.5 rounded-full',
+            'animate-[circular_1.2s_linear_infinite]'
+          )}
           style={{
             left: '50%',
             top: '50%',
@@ -46,7 +56,13 @@ function ThinkingCircularDots() {
 function ThinkingGradientWave() {
   return (
     <div className='relative h-6 w-16 overflow-hidden'>
-      <div className={cn('absolute inset-0', 'via-primary bg-gradient-to-r from-transparent to-transparent', 'animate-[wave_2s_ease-in-out_infinite]')} />
+      <div
+        className={cn(
+          'absolute inset-0',
+          'via-primary bg-gradient-to-r from-transparent to-transparent',
+          'animate-[wave_2s_ease-in-out_infinite]'
+        )}
+      />
     </div>
   )
 }
@@ -58,7 +74,10 @@ function ThinkingBarGraph() {
       {[...Array(5)].map((_, i) => (
         <div
           key={i}
-          className={cn('bg-primary w-1 rounded-t-sm', 'animate-[bounce_1s_ease-in-out_infinite]')}
+          className={cn(
+            'bg-primary w-1 rounded-t-sm',
+            'animate-[bounce_1s_ease-in-out_infinite]'
+          )}
           style={{
             animationDelay: `${i * 0.15}s`,
             height: `${Math.max(0.3, Math.random())}rem`,
@@ -77,7 +96,11 @@ export const thinking = {
   bar: <ThinkingBarGraph />,
 }
 
-export function ThinkingIndicator<T extends keyof typeof thinking>({ type }: { type: T }) {
+export function ThinkingIndicator<T extends keyof typeof thinking>({
+  type,
+}: {
+  type: T
+}) {
   return (
     <div className='mt-3 flex items-center gap-2 px-4'>
       <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>

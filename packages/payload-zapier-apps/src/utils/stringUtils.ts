@@ -4,7 +4,9 @@
  * @returns The camelCase string
  */
 export function camelCase(str: string): string {
-  return str.replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : '')).replace(/^([A-Z])/, (m) => m.toLowerCase())
+  return str
+    .replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
+    .replace(/^([A-Z])/, (m) => m.toLowerCase())
 }
 
 /**
@@ -13,7 +15,9 @@ export function camelCase(str: string): string {
  * @returns The PascalCase string
  */
 export function pascalCase(str: string): string {
-  return str.replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : '')).replace(/^(.)/, (m) => m.toUpperCase())
+  return str
+    .replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
+    .replace(/^(.)/, (m) => m.toUpperCase())
 }
 
 /**

@@ -10,7 +10,9 @@ export class WorkOSClient {
 
     const apiKey = config.apiKey || process.env.WORKOS_API_KEY
     if (!apiKey) {
-      throw new Error('WorkOS API key is required. Set it in the plugin config or as WORKOS_API_KEY environment variable.')
+      throw new Error(
+        'WorkOS API key is required. Set it in the plugin config or as WORKOS_API_KEY environment variable.'
+      )
     }
 
     this.workos = new WorkOS(apiKey)
@@ -20,7 +22,12 @@ export class WorkOSClient {
     return this.workos
   }
 
-  async getAuthorizationURL(options: { connection?: string; organization?: string; redirectURI?: string; state?: string }) {
+  async getAuthorizationURL(options: {
+    connection?: string
+    organization?: string
+    redirectURI?: string
+    state?: string
+  }) {
     const redirectURI = options.redirectURI || this.config.redirectUri
     if (!redirectURI) {
       throw new Error('Redirect URI is required for SSO authentication')
@@ -49,18 +56,27 @@ export class WorkOSClient {
   }
 
   async getSecret(name: string) {
-    throw new Error('Secret Manager is not available in the current WorkOS SDK version')
+    throw new Error(
+      'Secret Manager is not available in the current WorkOS SDK version'
+    )
   }
 
   async createSecret(name: string, value: string) {
-    throw new Error('Secret Manager is not available in the current WorkOS SDK version')
+    throw new Error(
+      'Secret Manager is not available in the current WorkOS SDK version'
+    )
   }
 
   async getMFAFactors(userId: string) {
     return (this.workos.mfa as any).listFactors(userId)
   }
 
-  async enrollMFAFactor(options: { type: string; userId: string; phoneNumber?: string; totp?: string }) {
+  async enrollMFAFactor(options: {
+    type: string
+    userId: string
+    phoneNumber?: string
+    totp?: string
+  }) {
     return (this.workos.mfa as any).enrollFactor({
       type: options.type,
       userId: options.userId,

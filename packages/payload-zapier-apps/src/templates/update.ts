@@ -7,14 +7,30 @@ import { pascalCase, titleCase, sentenceCase } from '../utils/stringUtils'
  * @param collectionSentence The collection name in sentence case
  * @returns The input fields as a string
  */
-function generateInputFields(fields: ZapierField[], collectionSentence: string): string {
+function generateInputFields(
+  fields: ZapierField[],
+  collectionSentence: string
+): string {
   return fields
-    .filter((field) => typeof field === 'object' && 'name' in field && field.name && field.type)
+    .filter(
+      (field) =>
+        typeof field === 'object' && 'name' in field && field.name && field.type
+    )
     .map((field) => {
       const fieldName = field.name as string
       const fieldType = field.type as string
 
-      if (['text', 'email', 'number', 'date', 'checkbox', 'textarea', 'code'].includes(fieldType)) {
+      if (
+        [
+          'text',
+          'email',
+          'number',
+          'date',
+          'checkbox',
+          'textarea',
+          'code',
+        ].includes(fieldType)
+      ) {
         return `    {
       key: '${fieldName}',
       label: '${titleCase(fieldName)}',
@@ -24,7 +40,9 @@ function generateInputFields(fields: ZapierField[], collectionSentence: string):
     }`
       } else if (fieldType === 'relationship' && field.relationTo) {
         // Handle relationship fields
-        const relationTo = Array.isArray(field.relationTo) ? field.relationTo[0] : field.relationTo
+        const relationTo = Array.isArray(field.relationTo)
+          ? field.relationTo[0]
+          : field.relationTo
         return `    {
       key: '${fieldName}',
       label: '${titleCase(fieldName)}',
@@ -55,12 +73,27 @@ function generateInputFields(fields: ZapierField[], collectionSentence: string):
  */
 function generateOutputFields(fields: ZapierField[]): string {
   return fields
-    .filter((field) => typeof field === 'object' && 'name' in field && field.name && field.type)
+    .filter(
+      (field) =>
+        typeof field === 'object' && 'name' in field && field.name && field.type
+    )
     .map((field) => {
       const fieldName = field.name as string
       const fieldType = field.type as string
 
-      if (['text', 'email', 'number', 'date', 'checkbox', 'textarea', 'code', 'relationship', 'array'].includes(fieldType)) {
+      if (
+        [
+          'text',
+          'email',
+          'number',
+          'date',
+          'checkbox',
+          'textarea',
+          'code',
+          'relationship',
+          'array',
+        ].includes(fieldType)
+      ) {
         return `    {
       key: '${fieldName}',
       label: '${titleCase(fieldName)}'
@@ -77,16 +110,22 @@ function generateOutputFields(fields: ZapierField[]): string {
  * @param collection The collection to generate the updates for
  * @returns The content of the updates.js file
  */
-export function generateUpdateTemplate(collection: ZapierCollectionConfig): string {
+export function generateUpdateTemplate(
+  collection: ZapierCollectionConfig
+): string {
   const collectionName = pascalCase(collection.slug)
   const collectionTitle = titleCase(collection.slug)
   const collectionSentence = sentenceCase(collection.slug)
 
   // Generate input fields based on collection fields
-  const inputFields = collection.fields ? generateInputFields(collection.fields, collectionSentence) : ''
+  const inputFields = collection.fields
+    ? generateInputFields(collection.fields, collectionSentence)
+    : ''
 
   // Generate output fields based on collection fields
-  const outputFields = collection.fields ? generateOutputFields(collection.fields) : ''
+  const outputFields = collection.fields
+    ? generateOutputFields(collection.fields)
+    : ''
 
   return `// Update ${collectionTitle} for Zapier
 const perform = async (z, bundle) => {

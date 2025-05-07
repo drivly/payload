@@ -6,7 +6,9 @@ import { pascalCase, titleCase } from '../utils/stringUtils'
  * @param collection The collection to generate the app for
  * @returns The content of the app.js file
  */
-export function generateAppTemplate(collection: ZapierCollectionConfig): string {
+export function generateAppTemplate(
+  collection: ZapierCollectionConfig
+): string {
   const collectionName = pascalCase(collection.slug)
   const collectionTitle = titleCase(collection.slug)
 

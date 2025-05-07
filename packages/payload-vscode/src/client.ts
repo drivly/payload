@@ -35,7 +35,9 @@ export class PayloadClient {
       const envPath = path.join(rootPath, '.env')
 
       if (!fs.existsSync(envPath)) {
-        throw new Error('.env file not found in workspace root. Please create it with DATABASE_URI=your_connection_string')
+        throw new Error(
+          '.env file not found in workspace root. Please create it with DATABASE_URI=your_connection_string'
+        )
       }
 
       // Load .env file
@@ -56,10 +58,14 @@ export class PayloadClient {
         vscode.window.showInformationMessage('Connected to Payload CMS')
       } catch (importError) {
         console.error('Error importing config:', importError)
-        throw new Error(`Failed to import payload.config.ts: ${importError instanceof Error ? importError.message : String(importError)}`)
+        throw new Error(
+          `Failed to import payload.config.ts: ${importError instanceof Error ? importError.message : String(importError)}`
+        )
       }
     } catch (error) {
-      vscode.window.showErrorMessage(`Failed to initialize Payload client: ${error instanceof Error ? error.message : String(error)}`)
+      vscode.window.showErrorMessage(
+        `Failed to initialize Payload client: ${error instanceof Error ? error.message : String(error)}`
+      )
       throw error
     }
   }
@@ -78,11 +84,15 @@ export class PayloadClient {
 
     try {
       // Get collection names from the payload config
-      const collections = Object.keys(this.payload.collections).filter((name) => !name.startsWith('payload-'))
+      const collections = Object.keys(this.payload.collections).filter(
+        (name) => !name.startsWith('payload-')
+      )
 
       return collections.sort()
     } catch (error) {
-      vscode.window.showErrorMessage(`Error fetching collections: ${error instanceof Error ? error.message : String(error)}`)
+      vscode.window.showErrorMessage(
+        `Error fetching collections: ${error instanceof Error ? error.message : String(error)}`
+      )
       return []
     }
   }
@@ -108,7 +118,9 @@ export class PayloadClient {
 
       return result.docs || []
     } catch (error) {
-      vscode.window.showErrorMessage(`Error fetching documents: ${error instanceof Error ? error.message : String(error)}`)
+      vscode.window.showErrorMessage(
+        `Error fetching documents: ${error instanceof Error ? error.message : String(error)}`
+      )
       return []
     }
   }
@@ -116,7 +128,10 @@ export class PayloadClient {
   /**
    * Search documents in a collection
    */
-  async searchDocuments(collectionName: string, searchTerm: string): Promise<any[]> {
+  async searchDocuments(
+    collectionName: string,
+    searchTerm: string
+  ): Promise<any[]> {
     if (!this.connected || !this.payload) {
       await this.initialize()
     }
@@ -133,14 +148,19 @@ export class PayloadClient {
         where: {
           // This is a simplified search, in reality you might want to search specific fields
           // based on the collection schema
-          or: [{ name: { contains: searchTerm } }, { id: { contains: searchTerm } }],
+          or: [
+            { name: { contains: searchTerm } },
+            { id: { contains: searchTerm } },
+          ],
         },
         limit: 50,
       })
 
       return result.docs || []
     } catch (error) {
-      vscode.window.showErrorMessage(`Error searching documents: ${error instanceof Error ? error.message : String(error)}`)
+      vscode.window.showErrorMessage(
+        `Error searching documents: ${error instanceof Error ? error.message : String(error)}`
+      )
       return []
     }
   }
@@ -165,12 +185,16 @@ export class PayloadClient {
       })
 
       if (!document) {
-        throw new Error(`Document ${documentId} not found in collection ${collectionName}`)
+        throw new Error(
+          `Document ${documentId} not found in collection ${collectionName}`
+        )
       }
 
       return document
     } catch (error) {
-      vscode.window.showErrorMessage(`Error fetching document: ${error instanceof Error ? error.message : String(error)}`)
+      vscode.window.showErrorMessage(
+        `Error fetching document: ${error instanceof Error ? error.message : String(error)}`
+      )
       throw error
     }
   }
@@ -178,7 +202,11 @@ export class PayloadClient {
   /**
    * Update a document
    */
-  async updateDocument(collectionName: string, documentId: string, data: any): Promise<void> {
+  async updateDocument(
+    collectionName: string,
+    documentId: string,
+    data: any
+  ): Promise<void> {
     if (!this.connected || !this.payload) {
       await this.initialize()
     }
@@ -195,9 +223,13 @@ export class PayloadClient {
         data,
       })
 
-      vscode.window.showInformationMessage(`Document ${documentId} updated successfully`)
+      vscode.window.showInformationMessage(
+        `Document ${documentId} updated successfully`
+      )
     } catch (error) {
-      vscode.window.showErrorMessage(`Error updating document: ${error instanceof Error ? error.message : String(error)}`)
+      vscode.window.showErrorMessage(
+        `Error updating document: ${error instanceof Error ? error.message : String(error)}`
+      )
       throw error
     }
   }

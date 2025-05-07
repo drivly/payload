@@ -8,7 +8,8 @@ import React from 'react'
 /** Type representing all values returned by Vercel's useChat hook */
 type ChatContextValue = ReturnType<typeof useChat>
 
-const [ChatContextProvider, _useChatContext] = createRequiredContext<ChatContextValue>('ChatContext')
+const [ChatContextProvider, _useChatContext] =
+  createRequiredContext<ChatContextValue>('ChatContext')
 
 /**
  * Hook to access chat messages and message-related functionality
@@ -26,7 +27,18 @@ export function useChatMessages() {
   const { error, messages, reload } = _useChatContext({})
   const { isThinking } = useChatStatus()
 
-  const displayMessages: UIMessage[] = isThinking ? [...messages, { role: 'assistant', content: '', id: 'thinking', experimental_attachments: [], parts: [] }] : messages
+  const displayMessages: UIMessage[] = isThinking
+    ? [
+        ...messages,
+        {
+          role: 'assistant',
+          content: '',
+          id: 'thinking',
+          experimental_attachments: [],
+          parts: [],
+        },
+      ]
+    : messages
 
   return { error, messages: displayMessages, reload }
 }

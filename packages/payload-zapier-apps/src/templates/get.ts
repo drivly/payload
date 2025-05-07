@@ -8,12 +8,27 @@ import { pascalCase, titleCase, sentenceCase } from '../utils/stringUtils'
  */
 function generateOutputFields(fields: ZapierField[]): string {
   return fields
-    .filter((field) => typeof field === 'object' && 'name' in field && field.name && field.type)
+    .filter(
+      (field) =>
+        typeof field === 'object' && 'name' in field && field.name && field.type
+    )
     .map((field) => {
       const fieldName = field.name as string
       const fieldType = field.type as string
 
-      if (['text', 'email', 'number', 'date', 'checkbox', 'textarea', 'code', 'relationship', 'array'].includes(fieldType)) {
+      if (
+        [
+          'text',
+          'email',
+          'number',
+          'date',
+          'checkbox',
+          'textarea',
+          'code',
+          'relationship',
+          'array',
+        ].includes(fieldType)
+      ) {
         return `    {
       key: '${fieldName}',
       label: '${titleCase(fieldName)}'
@@ -30,13 +45,17 @@ function generateOutputFields(fields: ZapierField[]): string {
  * @param collection The collection to generate the gets for
  * @returns The content of the gets.js file
  */
-export function generateGetTemplate(collection: ZapierCollectionConfig): string {
+export function generateGetTemplate(
+  collection: ZapierCollectionConfig
+): string {
   const collectionName = pascalCase(collection.slug)
   const collectionTitle = titleCase(collection.slug)
   const collectionSentence = sentenceCase(collection.slug)
 
   // Generate output fields based on collection fields
-  const outputFields = collection.fields ? generateOutputFields(collection.fields) : ''
+  const outputFields = collection.fields
+    ? generateOutputFields(collection.fields)
+    : ''
 
   return `// Get ${collectionTitle} for Zapier
 const perform = async (z, bundle) => {

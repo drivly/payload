@@ -27,7 +27,10 @@ export const PROMPT_TEMPLATES = {
     Additional context: ${JSON.stringify(customContext, null, 2)}`
       : ''
 
-    return [basePrompt, userContext, additionalContext].filter(Boolean).join('\n').trim()
+    return [basePrompt, userContext, additionalContext]
+      .filter(Boolean)
+      .join('\n')
+      .trim()
   },
 }
 

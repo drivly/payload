@@ -17,7 +17,18 @@ export default defineConfig({
   bundle: true,
   dts: true,
   sourcemap: true,
-  external: ['react', 'react-dom', 'payload', 'next', 'next/server', 'next/headers', 'use-sync-external-store', 'use-sync-external-store/shim', 'swr', 'zustand'],
+  external: [
+    'react',
+    'react-dom',
+    'payload',
+    'next',
+    'next/server',
+    'next/headers',
+    'use-sync-external-store',
+    'use-sync-external-store/shim',
+    'swr',
+    'zustand',
+  ],
   esbuildOptions(options) {
     options.alias = {
       'node:path': 'path',

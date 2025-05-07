@@ -48,7 +48,9 @@ const useModalStore = create<ModalState>((set) => ({
       set({
         user: {
           authedUser,
-          avatar: authedUser?.user?.email ? `https://www.gravatar.com/avatar/${authedUser.user.email.toLowerCase().trim()}?d=mp` : null,
+          avatar: authedUser?.user?.email
+            ? `https://www.gravatar.com/avatar/${authedUser.user.email.toLowerCase().trim()}?d=mp`
+            : null,
         },
       }),
   },
@@ -68,7 +70,7 @@ export const useModal = () =>
     useShallow((s) => ({
       isOpen: s.isOpen,
       open: s.actions.open,
-    })),
+    }))
   )
 
 /**
@@ -84,7 +86,7 @@ export const useModalConfig = () =>
     useShallow((s) => ({
       config: s.config,
       setConfig: s.actions.setConfig,
-    })),
+    }))
   )
 
 /**
@@ -100,5 +102,5 @@ export const useModalUser = () =>
     useShallow((s) => ({
       user: s.user,
       setUser: s.actions.setUser,
-    })),
+    }))
   )

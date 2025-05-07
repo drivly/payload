@@ -151,17 +151,24 @@ function createChatRoute(options: ChatRouteOptions = {}) {
     }
 
     // Only get auth if required
-    const auth = requireAuth && getAuthResult ? await getAuthResult() : { user: null }
+    const auth =
+      requireAuth && getAuthResult ? await getAuthResult() : { user: null }
 
     if (requireAuth && !auth.user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
     }
 
     console.log('auth', auth.user?.collection === 'apikeys')
     // Handle POST requests (chat completions)
     const { messages } = await req.json()
     if (!messages) {
-      return NextResponse.json({ error: 'No messages provided' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'No messages provided' },
+        { status: 400 }
+      )
     }
 
     const context: SystemPromptContext = {
@@ -169,7 +176,8 @@ function createChatRoute(options: ChatRouteOptions = {}) {
       customContext: promptContext,
     }
 
-    const fullSystemPrompt = typeof systemPrompt === 'function' ? systemPrompt(context) : systemPrompt
+    const fullSystemPrompt =
+      typeof systemPrompt === 'function' ? systemPrompt(context) : systemPrompt
 
     try {
       const result = streamText({
@@ -186,7 +194,10 @@ function createChatRoute(options: ChatRouteOptions = {}) {
       })
     } catch (error) {
       debugError(error)
-      return NextResponse.json({ error: defaultErrorHandler(error, true) }, { status: 500 })
+      return NextResponse.json(
+        { error: defaultErrorHandler(error, true) },
+        { status: 500 }
+      )
     }
   }
 }

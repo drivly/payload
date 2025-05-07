@@ -56,7 +56,16 @@ Appears as a floating modal dialog:
 import { ChatBot } from '@drivly/payload-agent/chat-bot'
 
 export default function Page() {
-  return <ChatBot type='modal' logo='/logo.svg' aiAvatar='/ai-avatar.png' defaultMessage='Hello! How can I help you today?' withOverlay withOutsideClick />
+  return (
+    <ChatBot
+      type='modal'
+      logo='/logo.svg'
+      aiAvatar='/ai-avatar.png'
+      defaultMessage='Hello! How can I help you today?'
+      withOverlay
+      withOutsideClick
+    />
+  )
 }
 ```
 

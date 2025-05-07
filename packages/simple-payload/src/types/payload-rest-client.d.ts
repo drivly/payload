@@ -26,5 +26,7 @@ declare module 'payload-rest-client' {
   /**
    * Creates a REST API client for Payload CMS
    */
-  export function createPayloadRestAPIClient(config: PayloadRestAPIClientConfig): PayloadRestAPIClient
+  export function createPayloadRestAPIClient(
+    config: PayloadRestAPIClientConfig
+  ): PayloadRestAPIClient
 }

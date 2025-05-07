@@ -6,7 +6,9 @@ import { pascalCase, titleCase, sentenceCase } from '../utils/stringUtils'
  * @param collection The collection to generate the deletes for
  * @returns The content of the deletes.js file
  */
-export function generateDeleteTemplate(collection: ZapierCollectionConfig): string {
+export function generateDeleteTemplate(
+  collection: ZapierCollectionConfig
+): string {
   const collectionName = pascalCase(collection.slug)
   const collectionTitle = titleCase(collection.slug)
   const collectionSentence = sentenceCase(collection.slug)

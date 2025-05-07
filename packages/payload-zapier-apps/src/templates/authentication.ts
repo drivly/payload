@@ -6,7 +6,9 @@ import { pascalCase, titleCase } from '../utils/stringUtils'
  * @param collection The collection to generate the authentication for
  * @returns The content of the authentication.js file
  */
-export function generateAuthenticationTemplate(collection: ZapierCollectionConfig): string {
+export function generateAuthenticationTemplate(
+  collection: ZapierCollectionConfig
+): string {
   const collectionName = pascalCase(collection.slug)
   const collectionTitle = titleCase(collection.slug)
 

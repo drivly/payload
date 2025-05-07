@@ -58,7 +58,11 @@ export const createPayloadClient = (payload: any): PayloadDB => {
                     })
 
                 case 'update':
-                  return (id: string, data: CollectionData, query: CollectionQuery = {}) =>
+                  return (
+                    id: string,
+                    data: CollectionData,
+                    query: CollectionQuery = {}
+                  ) =>
                     payload.update({
                       collection,
                       id,
@@ -68,7 +72,11 @@ export const createPayloadClient = (payload: any): PayloadDB => {
 
                 case 'upsert':
                 case 'set':
-                  return (id: string, data: CollectionData, query: CollectionQuery = {}) =>
+                  return (
+                    id: string,
+                    data: CollectionData,
+                    query: CollectionQuery = {}
+                  ) =>
                     payload.db.upsert({
                       collection,
                       where: { id: { equals: id } },
@@ -85,12 +93,14 @@ export const createPayloadClient = (payload: any): PayloadDB => {
                     })
 
                 default:
-                  throw new Error(`Method ${methodName} not implemented for collection ${collection}`)
+                  throw new Error(
+                    `Method ${methodName} not implemented for collection ${collection}`
+                  )
               }
             },
-          },
+          }
         )
       },
-    },
+    }
   ) as PayloadDB
 }

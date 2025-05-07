@@ -16,7 +16,10 @@ const defaultOptions = {
 /**
  * Process files selected by the user, validating and creating AttachmentFile objects
  */
-export function handleFileSelection(files: FileList, options: FileUploadOptions = {}) {
+export function handleFileSelection(
+  files: FileList,
+  options: FileUploadOptions = {}
+) {
   const opts = { ...defaultOptions, ...options }
   const maxSize = opts.maxSizeMB! * 1024 * 1024 // Convert MB to bytes
 

@@ -7,10 +7,15 @@ export interface UseAuthUserOptions {
   getAuthResult?: () => Promise<PayloadAgentAuthResult>
 }
 
-export const useAuthResult = ({ initialAuthResult, getAuthResult }: UseAuthUserOptions) => {
+export const useAuthResult = ({
+  initialAuthResult,
+  getAuthResult,
+}: UseAuthUserOptions) => {
   const pathname = usePathname()
 
-  const [authResult, setAuthResult] = useState<PayloadAgentAuthResult | null>(initialAuthResult ?? null)
+  const [authResult, setAuthResult] = useState<PayloadAgentAuthResult | null>(
+    initialAuthResult ?? null
+  )
 
   useEffect(() => {
     if (initialAuthResult) {

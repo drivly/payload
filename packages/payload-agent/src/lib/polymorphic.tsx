@@ -9,7 +9,9 @@ import React from 'react'
  * @param {TAs} [props.as] - The element type to render. Defaults to `div`.
  * @returns {React.ReactElement} - The rendered component.
  */
-export const Wrapper = <TAs extends ElementType = 'div'>(props: { as?: TAs } & React.ComponentPropsWithRef<TAs>): React.ReactElement => {
+export const Wrapper = <TAs extends ElementType = 'div'>(
+  props: { as?: TAs } & React.ComponentPropsWithRef<TAs>
+): React.ReactElement => {
   const { as: Component = 'div', ...rest } = props
   return <Component {...rest} />
 }

@@ -4,7 +4,11 @@ import { Button } from '../ui/button'
 import { ChatContainer } from '../ui/chat-container'
 import { useCheckMobile, useOutsideClick } from '../ui/hooks'
 import { cn } from '../../lib/utils'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable'
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '../ui/resizable'
 import { ScrollButton } from '../ui/scroll-button'
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '../ui/sheet'
 import { MessageSquareText, X, XIcon } from 'lucide-react'
@@ -38,7 +42,8 @@ export interface ResizableRootProps extends RootProps {
   direction?: 'horizontal' | 'vertical'
 }
 
-export interface ModalProps extends ForwardRefComponent<HTMLDivElement, HTMLMotionProps<'div'>> {
+export interface ModalProps
+  extends ForwardRefComponent<HTMLDivElement, HTMLMotionProps<'div'>> {
   children: ReactNode
   className?: string
   withOutsideClick?: boolean
@@ -52,7 +57,16 @@ export interface HeaderProps extends React.ComponentProps<'div'> {
 }
 
 const useChatContainer = (props: RootProps) => {
-  const { aiAvatar, defaultMessage, logo, title, suggestions, initialAuthResult, getAuthResult, requireAuth = !!getAuthResult } = props
+  const {
+    aiAvatar,
+    defaultMessage,
+    logo,
+    title,
+    suggestions,
+    initialAuthResult,
+    getAuthResult,
+    requireAuth = !!getAuthResult,
+  } = props
 
   const authResult = useAuthResult({ initialAuthResult, getAuthResult })
   const { setConfig } = useModalConfig()
@@ -61,14 +75,25 @@ const useChatContainer = (props: RootProps) => {
   useEffect(() => {
     if (logo) setConfig({ aiAvatar, defaultMessage, logo, suggestions })
     else if (title) setConfig({ aiAvatar, defaultMessage, title, suggestions })
-  }, [defaultMessage, logo, setConfig, authResult, setUser, title, suggestions, aiAvatar])
+  }, [
+    defaultMessage,
+    logo,
+    setConfig,
+    authResult,
+    setUser,
+    title,
+    suggestions,
+    aiAvatar,
+  ])
 
   if (requireAuth && !authResult?.user) return null
 
   return { authResult }
 }
 
-const withChatContainer = <TProps extends RootProps>(WrappedComponent: React.ComponentType<TProps>) => {
+const withChatContainer = <TProps extends RootProps>(
+  WrappedComponent: React.ComponentType<TProps>
+) => {
   return (props: TProps) => {
     const result = useChatContainer(props)
     if (!result) return null
@@ -78,7 +103,13 @@ const withChatContainer = <TProps extends RootProps>(WrappedComponent: React.Com
 
 const BaseContainer = ({ children, className }: RootProps) => (
   <ChatProvider>
-    <div data-chat-widget='root' className={cn('fixed right-[16px] bottom-[16px] z-50 h-0 w-full', className)}>
+    <div
+      data-chat-widget='root'
+      className={cn(
+        'fixed right-[16px] bottom-[16px] z-50 h-0 w-full',
+        className
+      )}
+    >
       {children}
     </div>
   </ChatProvider>
@@ -90,7 +121,13 @@ const PanelContainer = ({ children, className }: RootProps) => {
   return (
     <ChatProvider>
       <Sheet open={isOpen} onOpenChange={open}>
-        <div data-chat-widget='panel' className={cn('fixed right-[16px] bottom-[16px] z-50 h-0 w-full', className)}>
+        <div
+          data-chat-widget='panel'
+          className={cn(
+            'fixed right-[16px] bottom-[16px] z-50 h-0 w-full',
+            className
+          )}
+        >
           {children}
         </div>
       </Sheet>
@@ -98,10 +135,24 @@ const PanelContainer = ({ children, className }: RootProps) => {
   )
 }
 
-const ResizableContainer = ({ children, className, direction = 'horizontal', layoutChildren }: ResizableRootProps) => (
+const ResizableContainer = ({
+  children,
+  className,
+  direction = 'horizontal',
+  layoutChildren,
+}: ResizableRootProps) => (
   <ChatProvider>
-    <ResizablePanelGroup direction={direction} autoSaveId='resizable-chat' autoSave='localStorage' className={className}>
-      <ResizablePanel defaultSize={100} minSize={25} className='scrollbar-hide h-full min-h-screen !overflow-x-hidden !overflow-y-scroll'>
+    <ResizablePanelGroup
+      direction={direction}
+      autoSaveId='resizable-chat'
+      autoSave='localStorage'
+      className={className}
+    >
+      <ResizablePanel
+        defaultSize={100}
+        minSize={25}
+        className='scrollbar-hide h-full min-h-screen !overflow-x-hidden !overflow-y-scroll'
+      >
         {layoutChildren}
       </ResizablePanel>
       {children}
@@ -113,7 +164,11 @@ const PanelRoot = withChatContainer(PanelContainer)
 const Root = withChatContainer(BaseContainer)
 const ResizableRoot = withChatContainer(ResizableContainer)
 
-function Panel({ className, withOverlay, ...props }: React.ComponentProps<typeof SheetContent> & { withOverlay?: boolean }) {
+function Panel({
+  className,
+  withOverlay,
+  ...props
+}: React.ComponentProps<typeof SheetContent> & { withOverlay?: boolean }) {
   return (
     <SheetContent
       data-chat-widget='panel-content'
@@ -121,11 +176,13 @@ function Panel({ className, withOverlay, ...props }: React.ComponentProps<typeof
       overlay={withOverlay}
       className={cn(
         'bg-background border-border font-geist z-50 flex w-full max-w-full flex-col overflow-hidden border shadow-2xl sm:w-[600px] sm:max-w-1/2 dark:bg-[#0f0f10]',
-        className,
+        className
       )}
     >
       <SheetTitle className='sr-only'>Chat</SheetTitle>
-      <SheetDescription className='sr-only'>Chat panel description</SheetDescription>
+      <SheetDescription className='sr-only'>
+        Chat panel description
+      </SheetDescription>
       {props.children}
     </SheetContent>
   )
@@ -154,7 +211,13 @@ const modalVariants = (isMobile: boolean) => ({
   },
 })
 
-const Modal = ({ children, className, withOutsideClick = true, withOverlay = false, ...props }: ModalProps) => {
+const Modal = ({
+  children,
+  className,
+  withOutsideClick = true,
+  withOverlay = false,
+  ...props
+}: ModalProps) => {
   const { isOpen, open } = useModal()
   const modalRef = useOutsideClick({ isOpen, open, withOutsideClick })
   const isMobile = useCheckMobile()
@@ -182,7 +245,7 @@ const Modal = ({ children, className, withOutsideClick = true, withOverlay = fal
             exit='exit'
             className={cn(
               'bg-background border-border font-geist fixed inset-x-0 bottom-0 z-50 flex h-[99%] w-full max-w-full flex-col overflow-hidden rounded-t-xl border shadow-2xl sm:inset-x-auto sm:right-[16px] sm:bottom-[80px] sm:h-[85vh] sm:w-[500px] sm:rounded-xl dark:bg-[#0f0f10]',
-              className,
+              className
             )}
             {...props}
           >
@@ -210,7 +273,10 @@ const Resizable = ({
           defaultSize={30}
           minSize={25}
           maxSize={70}
-          className={cn('bg-background border-border font-geist z-50 flex w-full max-w-full flex-col overflow-hidden border shadow-2xl dark:bg-[#0f0f10]', props.className)}
+          className={cn(
+            'bg-background border-border font-geist z-50 flex w-full max-w-full flex-col overflow-hidden border shadow-2xl dark:bg-[#0f0f10]',
+            props.className
+          )}
         >
           {children}
         </ResizablePanel>
@@ -229,7 +295,7 @@ const Trigger = (props: React.ComponentProps<'button'>) => {
       type='button'
       className={cn(
         'group bg-background/80 border-input hover:bg-background hover:border-border text-muted-foreground hover:text-primary absolute right-0 bottom-0 z-[1] flex h-[48px] w-[48px] cursor-pointer items-center justify-center rounded-full border transition-all duration-200 ease-out',
-        props.className,
+        props.className
       )}
       onClick={() => open(!isOpen)}
     >
@@ -244,7 +310,13 @@ const Trigger = (props: React.ComponentProps<'button'>) => {
   )
 }
 
-const Header = ({ className, buttonStyle, logoStyle, titleStyle, ...props }: HeaderProps) => {
+const Header = ({
+  className,
+  buttonStyle,
+  logoStyle,
+  titleStyle,
+  ...props
+}: HeaderProps) => {
   const { open } = useModal()
   const { config } = useModalConfig()
 
@@ -254,7 +326,7 @@ const Header = ({ className, buttonStyle, logoStyle, titleStyle, ...props }: Hea
       aria-label='Chat header'
       className={cn(
         'border-border bg-background [&>h2]:font-geist [&>h2]:text-primary flex w-full items-center justify-between border-b p-[16px] dark:bg-[#0f0f10] [&>h2]:text-[14px] [&>h2]:font-semibold',
-        className,
+        className
       )}
       {...props}
     >
@@ -263,10 +335,23 @@ const Header = ({ className, buttonStyle, logoStyle, titleStyle, ...props }: Hea
           {config.title}
         </h2>
       )}
-      {config.logo && <Image aria-label='Chat logo' src={config.logo} alt='Chat Logo' width={46} height={24} className={cn('invert-0 dark:invert', logoStyle)} priority />}
+      {config.logo && (
+        <Image
+          aria-label='Chat logo'
+          src={config.logo}
+          alt='Chat Logo'
+          width={46}
+          height={24}
+          className={cn('invert-0 dark:invert', logoStyle)}
+          priority
+        />
+      )}
       <Button
         onClick={() => open(false)}
-        className={cn('hover:bg-muted text-muted-foreground hover:text-primary h-8 w-8 cursor-pointer rounded-md border-none bg-transparent transition-colors', buttonStyle)}
+        className={cn(
+          'hover:bg-muted text-muted-foreground hover:text-primary h-8 w-8 cursor-pointer rounded-md border-none bg-transparent transition-colors',
+          buttonStyle
+        )}
         aria-label='Close chat'
       >
         <X className='h-5 w-5' />
@@ -280,15 +365,25 @@ function Content() {
   const { messages } = useChatMessages()
   const { config } = useModalConfig()
 
-  const containerRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>
-  const bottomRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>
+  const containerRef = useRef<HTMLDivElement>(
+    null
+  ) as React.RefObject<HTMLDivElement>
+  const bottomRef = useRef<HTMLDivElement>(
+    null
+  ) as React.RefObject<HTMLDivElement>
 
   if (!isOpen) return null
 
   return (
     <Fragment>
-      <ChatContainer data-chat-widget='chat-container' className='flex flex-1 flex-col overflow-y-auto px-2 py-4' ref={containerRef}>
-        {messages.length === 0 && <DefaultMessage message={config.defaultMessage} />}
+      <ChatContainer
+        data-chat-widget='chat-container'
+        className='flex flex-1 flex-col overflow-y-auto px-2 py-4'
+        ref={containerRef}
+      >
+        {messages.length === 0 && (
+          <DefaultMessage message={config.defaultMessage} />
+        )}
         {messages.map((message) => (
           <ChatMessage
             data-chat-widget='chat-message'
@@ -301,11 +396,24 @@ function Content() {
         ))}
       </ChatContainer>
       <ChatInput data-chat-widget='chat-input' />
-      <div data-chat-widget='scroll-button' className='absolute right-4 bottom-[56px] mr-px'>
+      <div
+        data-chat-widget='scroll-button'
+        className='absolute right-4 bottom-[56px] mr-px'
+      >
         <ScrollButton containerRef={containerRef} scrollRef={bottomRef} />
       </div>
     </Fragment>
   )
 }
 
-export { Content, Header, Modal, Panel, PanelRoot, Resizable, ResizableRoot, Root, Trigger }
+export {
+  Content,
+  Header,
+  Modal,
+  Panel,
+  PanelRoot,
+  Resizable,
+  ResizableRoot,
+  Root,
+  Trigger,
+}

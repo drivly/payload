@@ -2,7 +2,9 @@ import type { ReactNode } from 'react'
 import type { PayloadAgentAuthResult } from './auth'
 import type { Suggestion as StoreSuggestion } from '../components/store/modal-store'
 
-export type ChatWidgetHeaderProps = { logo: string; title?: never } | { logo?: never; title: string }
+export type ChatWidgetHeaderProps =
+  | { logo: string; title?: never }
+  | { logo?: never; title: string }
 
 export type ChatWidgetClassNameProps = {
   rootStyle?: string
@@ -35,7 +37,10 @@ export type PanelChatOptions = {
   withOutsideClick?: boolean
 }
 
-export type ChatWidgetOptions = ResizableChatOptions | ModalChatOptions | PanelChatOptions
+export type ChatWidgetOptions =
+  | ResizableChatOptions
+  | ModalChatOptions
+  | PanelChatOptions
 
 // Re-export the Suggestion type from the store
 export type Suggestion = StoreSuggestion
@@ -53,6 +58,7 @@ export type DefaultChatOptions = {
   ChatWidgetOptions
 
 // Add specific client props interface
-export interface ClientContainerProps extends Omit<DefaultChatOptions, 'getAuthResult' | 'requireAuth'> {
+export interface ClientContainerProps
+  extends Omit<DefaultChatOptions, 'getAuthResult' | 'requireAuth'> {
   initialAuthResult: PayloadAgentAuthResult | { user: null; permissions: any[] }
 }

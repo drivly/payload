@@ -13,7 +13,13 @@ type URLFieldOptions = {
  * Creates a URL field that renders as a clickable link in the admin UI
  * Links open in new windows with proper security attributes
  */
-export const urlField = ({ name = 'url', label = 'URL', required = false, validate, admin = {} }: URLFieldOptions = {}): Field => {
+export const urlField = ({
+  name = 'url',
+  label = 'URL',
+  required = false,
+  validate,
+  admin = {},
+}: URLFieldOptions = {}): Field => {
   return {
     name,
     type: 'text',

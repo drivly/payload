@@ -1,4 +1,10 @@
-import { CollectionData, CollectionQuery, PayloadDB, PayloadInstance, PayloadClientOptions } from './types'
+import {
+  CollectionData,
+  CollectionQuery,
+  PayloadDB,
+  PayloadInstance,
+  PayloadClientOptions,
+} from './types'
 
 /**
  * Determines if a provided value is a payload instance
@@ -25,7 +31,9 @@ const isPayloadInstance = (value: any): value is PayloadInstance => {
  * @param options - Payload CMS instance or configuration options
  * @returns A proxy object for database operations
  */
-export const createPayloadClient = (options: PayloadClientOptions): PayloadDB => {
+export const createPayloadClient = (
+  options: PayloadClientOptions
+): PayloadDB => {
   // If options is a payload instance, use it directly
   const payload = isPayloadInstance(options) ? options : (options as any)
   return new Proxy(
@@ -77,7 +85,11 @@ export const createPayloadClient = (options: PayloadClientOptions): PayloadDB =>
                     })
 
                 case 'update':
-                  return (id: string, data: CollectionData, query: CollectionQuery = {}) =>
+                  return (
+                    id: string,
+                    data: CollectionData,
+                    query: CollectionQuery = {}
+                  ) =>
                     payload.update({
                       collection,
                       id,
@@ -87,7 +99,11 @@ export const createPayloadClient = (options: PayloadClientOptions): PayloadDB =>
 
                 case 'upsert':
                 case 'set':
-                  return (id: string, data: CollectionData, query: CollectionQuery = {}) =>
+                  return (
+                    id: string,
+                    data: CollectionData,
+                    query: CollectionQuery = {}
+                  ) =>
                     payload.db.upsert({
                       collection,
                       where: { id: { equals: id } },
@@ -104,12 +120,14 @@ export const createPayloadClient = (options: PayloadClientOptions): PayloadDB =>
                     })
 
                 default:
-                  throw new Error(`Method ${methodName} not implemented for collection ${collection}`)
+                  throw new Error(
+                    `Method ${methodName} not implemented for collection ${collection}`
+                  )
               }
             },
-          },
+          }
         )
       },
-    },
+    }
   ) as PayloadDB
 }

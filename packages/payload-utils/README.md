@@ -39,15 +39,19 @@ import { createCloudflareApiHandler } from '@ai-primitives/payload-utils'
 import { getPayload } from 'payload'
 import configPromise from 'payload.config'
 
-const handler = createCloudflareApiHandler(getPayload, configPromise, async (req, ctx) => {
-  // Access the enhanced context
-  const { db, user, params } = ctx
+const handler = createCloudflareApiHandler(
+  getPayload,
+  configPromise,
+  async (req, ctx) => {
+    // Access the enhanced context
+    const { db, user, params } = ctx
 
-  // Use the db proxy for easy collection access
-  const items = await db.items.find({ limit: 10 })
+    // Use the db proxy for easy collection access
+    const items = await db.items.find({ limit: 10 })
 
-  return { items }
-})
+    return { items }
+  }
+)
 
 export default {
   fetch: (request) => handler(request, {}),

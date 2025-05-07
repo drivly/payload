@@ -1,5 +1,10 @@
 import { ZapierCollectionConfig, ZapierField } from '../types/collection'
-import { camelCase, pascalCase, titleCase, sentenceCase } from '../utils/stringUtils'
+import {
+  camelCase,
+  pascalCase,
+  titleCase,
+  sentenceCase,
+} from '../utils/stringUtils'
 
 /**
  * Generates input fields for filtering in a Zapier app
@@ -8,12 +13,19 @@ import { camelCase, pascalCase, titleCase, sentenceCase } from '../utils/stringU
  */
 function generateInputFields(fields: ZapierField[]): string {
   return fields
-    .filter((field) => typeof field === 'object' && 'name' in field && field.name && field.type)
+    .filter(
+      (field) =>
+        typeof field === 'object' && 'name' in field && field.name && field.type
+    )
     .map((field) => {
       const fieldName = field.name as string
       const fieldType = field.type as string
 
-      if (['text', 'email', 'number', 'date', 'textarea', 'code'].includes(fieldType)) {
+      if (
+        ['text', 'email', 'number', 'date', 'textarea', 'code'].includes(
+          fieldType
+        )
+      ) {
         return `    {
       key: '${fieldName}',
       label: '${titleCase(fieldName)}',
@@ -23,7 +35,9 @@ function generateInputFields(fields: ZapierField[]): string {
     }`
       } else if (fieldType === 'relationship' && field.relationTo) {
         // Handle relationship fields
-        const relationTo = Array.isArray(field.relationTo) ? field.relationTo[0] : field.relationTo
+        const relationTo = Array.isArray(field.relationTo)
+          ? field.relationTo[0]
+          : field.relationTo
         return `    {
       key: '${fieldName}',
       label: '${titleCase(fieldName)}',
@@ -45,12 +59,27 @@ function generateInputFields(fields: ZapierField[]): string {
  */
 function generateOutputFields(fields: ZapierField[]): string {
   return fields
-    .filter((field) => typeof field === 'object' && 'name' in field && field.name && field.type)
+    .filter(
+      (field) =>
+        typeof field === 'object' && 'name' in field && field.name && field.type
+    )
     .map((field) => {
       const fieldName = field.name as string
       const fieldType = field.type as string
 
-      if (['text', 'email', 'number', 'date', 'checkbox', 'textarea', 'code', 'relationship', 'array'].includes(fieldType)) {
+      if (
+        [
+          'text',
+          'email',
+          'number',
+          'date',
+          'checkbox',
+          'textarea',
+          'code',
+          'relationship',
+          'array',
+        ].includes(fieldType)
+      ) {
         return `    {
       key: '${fieldName}',
       label: '${titleCase(fieldName)}'
@@ -67,17 +96,23 @@ function generateOutputFields(fields: ZapierField[]): string {
  * @param collection The collection to generate the searches for
  * @returns The content of the searches.js file
  */
-export function generateListTemplate(collection: ZapierCollectionConfig): string {
+export function generateListTemplate(
+  collection: ZapierCollectionConfig
+): string {
   const collectionName = pascalCase(collection.slug)
   const collectionTitle = titleCase(collection.slug)
   const collectionCamel = camelCase(collection.slug)
   const collectionSentence = sentenceCase(collection.slug)
 
   // Generate input fields based on collection fields
-  const inputFields = collection.fields ? generateInputFields(collection.fields) : ''
+  const inputFields = collection.fields
+    ? generateInputFields(collection.fields)
+    : ''
 
   // Generate output fields based on collection fields
-  const outputFields = collection.fields ? generateOutputFields(collection.fields) : ''
+  const outputFields = collection.fields
+    ? generateOutputFields(collection.fields)
+    : ''
 
   return `// List ${collectionTitle} search for Zapier
 const perform = async (z, bundle) => {
@@ -106,7 +141,13 @@ const buildWhereClause = (inputData) => {
   ${
     collection.fields
       ? collection.fields
-          .filter((field) => typeof field === 'object' && 'name' in field && field.name && field.type)
+          .filter(
+            (field) =>
+              typeof field === 'object' &&
+              'name' in field &&
+              field.name &&
+              field.type
+          )
           .map((field) => {
             const fieldName = field.name as string
             return `  if (inputData.${fieldName}) {

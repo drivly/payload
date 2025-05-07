@@ -29,7 +29,9 @@ const payloadAgentPlugin =
       suggestions: pluginConfig.suggestions,
       getAuthResult: pluginConfig.getAuthResult,
       requireAuth: !!pluginConfig.getAuthResult,
-      ...('logo' in pluginConfig ? { logo: pluginConfig.logo as string, title: undefined } : { title: pluginConfig.title as string, logo: undefined }),
+      ...('logo' in pluginConfig
+        ? { logo: pluginConfig.logo as string, title: undefined }
+        : { title: pluginConfig.title as string, logo: undefined }),
     }
 
     // Handle each type separately to satisfy the union type

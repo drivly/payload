@@ -25,30 +25,49 @@ export function activate(context: vscode.ExtensionContext) {
       payloadProvider.refresh()
     }),
 
-    vscode.commands.registerCommand('payload-vscode.viewDocument', async (item: DocumentItem) => {
-      if (item) {
-        await openDocumentInEditor(item)
+    vscode.commands.registerCommand(
+      'payload-vscode.viewDocument',
+      async (item: DocumentItem) => {
+        if (item) {
+          await openDocumentInEditor(item)
+        }
       }
-    }),
+    ),
 
-    vscode.commands.registerCommand('payload-vscode.searchCollection', async (item: CollectionItem) => {
-      if (item) {
-        const searchTerm = await vscode.window.showInputBox({
-          prompt: `Search in ${item.label}`,
-          placeHolder: 'Enter search term',
-        })
+    vscode.commands.registerCommand(
+      'payload-vscode.searchCollection',
+      async (item: CollectionItem) => {
+        if (item) {
+          const searchTerm = await vscode.window.showInputBox({
+            prompt: `Search in ${item.label}`,
+            placeHolder: 'Enter search term',
+          })
 
-        if (searchTerm) {
-          try {
-            const documents = await payloadClient.searchDocuments(item.collectionName, searchTerm)
-            item.children = documents.map((doc) => new DocumentItem(doc.name || doc.id || 'Unknown', doc.id, item.collectionName, doc))
-            payloadProvider.refresh()
-          } catch (error) {
-            vscode.window.showErrorMessage(`Error searching: ${error instanceof Error ? error.message : String(error)}`)
+          if (searchTerm) {
+            try {
+              const documents = await payloadClient.searchDocuments(
+                item.collectionName,
+                searchTerm
+              )
+              item.children = documents.map(
+                (doc) =>
+                  new DocumentItem(
+                    doc.name || doc.id || 'Unknown',
+                    doc.id,
+                    item.collectionName,
+                    doc
+                  )
+              )
+              payloadProvider.refresh()
+            } catch (error) {
+              vscode.window.showErrorMessage(
+                `Error searching: ${error instanceof Error ? error.message : String(error)}`
+              )
+            }
           }
         }
       }
-    }),
+    )
   )
 }
 
@@ -72,7 +91,7 @@ class CollectionItem extends vscode.TreeItem {
 
   constructor(
     public readonly label: string,
-    public readonly collectionName: string,
+    public readonly collectionName: string
   ) {
     super(label, vscode.TreeItemCollapsibleState.Collapsed)
     this.contextValue = 'collection'
@@ -89,7 +108,7 @@ class DocumentItem extends vscode.TreeItem {
     public readonly label: string,
     public readonly id: string,
     public readonly collectionName: string,
-    public readonly document: any,
+    public readonly document: any
   ) {
     super(label, vscode.TreeItemCollapsibleState.None)
     this.contextValue = 'document'
@@ -106,9 +125,15 @@ class DocumentItem extends vscode.TreeItem {
 /**
  * Tree data provider for Payload collections
  */
-class PayloadCollectionsProvider implements vscode.TreeDataProvider<CollectionItem | DocumentItem> {
-  private _onDidChangeTreeData: vscode.EventEmitter<CollectionItem | DocumentItem | undefined> = new vscode.EventEmitter<CollectionItem | DocumentItem | undefined>()
-  readonly onDidChangeTreeData: vscode.Event<CollectionItem | DocumentItem | undefined> = this._onDidChangeTreeData.event
+class PayloadCollectionsProvider
+  implements vscode.TreeDataProvider<CollectionItem | DocumentItem>
+{
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    CollectionItem | DocumentItem | undefined
+  > = new vscode.EventEmitter<CollectionItem | DocumentItem | undefined>()
+  readonly onDidChangeTreeData: vscode.Event<
+    CollectionItem | DocumentItem | undefined
+  > = this._onDidChangeTreeData.event
 
   private collections: CollectionItem[] = []
 
@@ -124,7 +149,9 @@ class PayloadCollectionsProvider implements vscode.TreeDataProvider<CollectionIt
     return element
   }
 
-  getChildren(element?: CollectionItem | DocumentItem): Thenable<(CollectionItem | DocumentItem)[]> {
+  getChildren(
+    element?: CollectionItem | DocumentItem
+  ): Thenable<(CollectionItem | DocumentItem)[]> {
     if (!element) {
       return Promise.resolve(this.collections)
     }
@@ -137,15 +164,29 @@ class PayloadCollectionsProvider implements vscode.TreeDataProvider<CollectionIt
     return Promise.resolve([])
   }
 
-  async getDocumentsForCollection(collection: CollectionItem): Promise<DocumentItem[]> {
+  async getDocumentsForCollection(
+    collection: CollectionItem
+  ): Promise<DocumentItem[]> {
     try {
       if (collection.children.length === 0) {
-        const documents = await payloadClient.getDocuments(collection.collectionName)
-        collection.children = documents.map((doc) => new DocumentItem(doc.name || doc.id || 'Unknown', doc.id, collection.collectionName, doc))
+        const documents = await payloadClient.getDocuments(
+          collection.collectionName
+        )
+        collection.children = documents.map(
+          (doc) =>
+            new DocumentItem(
+              doc.name || doc.id || 'Unknown',
+              doc.id,
+              collection.collectionName,
+              doc
+            )
+        )
       }
       return collection.children
     } catch (error) {
-      vscode.window.showErrorMessage(`Error loading documents: ${error instanceof Error ? error.message : String(error)}`)
+      vscode.window.showErrorMessage(
+        `Error loading documents: ${error instanceof Error ? error.message : String(error)}`
+      )
       return []
     }
   }
@@ -155,11 +196,15 @@ class PayloadCollectionsProvider implements vscode.TreeDataProvider<CollectionIt
       // Get all collection names from the Payload API
       const collections = await payloadClient.getCollections()
 
-      this.collections = collections.map((collection) => new CollectionItem(collection, collection))
+      this.collections = collections.map(
+        (collection) => new CollectionItem(collection, collection)
+      )
 
       this.refresh()
     } catch (error) {
-      vscode.window.showErrorMessage(`Error loading collections: ${error instanceof Error ? error.message : String(error)}`)
+      vscode.window.showErrorMessage(
+        `Error loading collections: ${error instanceof Error ? error.message : String(error)}`
+      )
     }
   }
 }
@@ -178,7 +223,10 @@ async function openDocumentInEditor(item: DocumentItem): Promise<void> {
     // Create a temp file with .yaml extension
     const tempDir = path.join(extensionContext.storageUri.fsPath, 'temp')
     fs.mkdirSync(tempDir, { recursive: true })
-    const tempFile = path.join(tempDir, `${item.collectionName}-${item.id}.yaml`)
+    const tempFile = path.join(
+      tempDir,
+      `${item.collectionName}-${item.id}.yaml`
+    )
 
     // Write content to the file
     fs.writeFileSync(tempFile, yamlContent)
@@ -200,11 +248,19 @@ async function openDocumentInEditor(item: DocumentItem): Promise<void> {
         const updatedDoc = yaml.parse(updatedContent)
 
         // Save back to the Payload CMS
-        await payloadClient.updateDocument(item.collectionName, item.id, updatedDoc)
+        await payloadClient.updateDocument(
+          item.collectionName,
+          item.id,
+          updatedDoc
+        )
 
-        vscode.window.showInformationMessage(`Document ${item.id} updated successfully`)
+        vscode.window.showInformationMessage(
+          `Document ${item.id} updated successfully`
+        )
       } catch (error) {
-        vscode.window.showErrorMessage(`Error updating document: ${error instanceof Error ? error.message : String(error)}`)
+        vscode.window.showErrorMessage(
+          `Error updating document: ${error instanceof Error ? error.message : String(error)}`
+        )
       }
     })
 
@@ -215,6 +271,8 @@ async function openDocumentInEditor(item: DocumentItem): Promise<void> {
       }
     })
   } catch (error) {
-    vscode.window.showErrorMessage(`Error opening document: ${error instanceof Error ? error.message : String(error)}`)
+    vscode.window.showErrorMessage(
+      `Error opening document: ${error instanceof Error ? error.message : String(error)}`
+    )
   }
 }

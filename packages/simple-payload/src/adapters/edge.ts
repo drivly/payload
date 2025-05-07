@@ -26,7 +26,9 @@ const isPayloadInstance = (value: any): value is PayloadInstance => {
  * @param options - Payload CMS instance or REST client configuration
  * @returns A proxy object for database operations
  */
-export const createEdgePayloadClient = (options: PayloadClientOptions): PayloadDB => {
+export const createEdgePayloadClient = (
+  options: PayloadClientOptions
+): PayloadDB => {
   // If options is a payload instance, use createPayloadClient directly
   if (isPayloadInstance(options)) {
     return createPayloadClient(options)

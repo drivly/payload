@@ -20,7 +20,10 @@ export type ApiContext = {
   req?: any
 }
 
-export type ApiHandler<T = any> = (req: NextRequest, ctx: ApiContext) => Promise<T> | T
+export type ApiHandler<T = any> = (
+  req: NextRequest,
+  ctx: ApiContext
+) => Promise<T> | T
 
 export type PayloadClientResult = {
   payload: any
@@ -35,9 +38,14 @@ export type PayloadClientFn = () => Promise<PayloadClientResult>
  * @param isEdgeRuntime - Whether running in edge environment
  * @returns PayloadDB instance
  */
-export const initializePayloadClient = (payload: any, isEdgeRuntime: boolean): PayloadDB => {
+export const initializePayloadClient = (
+  payload: any,
+  isEdgeRuntime: boolean
+): PayloadDB => {
   if (!payload.db) {
-    return isEdgeRuntime ? createEdgePayloadClient(payload) : createNodePayloadClient(payload)
+    return isEdgeRuntime
+      ? createEdgePayloadClient(payload)
+      : createNodePayloadClient(payload)
   }
   return payload.db
 }
@@ -47,7 +55,11 @@ export const initializePayloadClient = (payload: any, isEdgeRuntime: boolean): P
  * @returns Mocked payload instance
  */
 export const createMockEdgePayload = (): PayloadInstance => {
-  const apiUrl = process.env.PAYLOAD_API_URL || (process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+  const apiUrl =
+    process.env.PAYLOAD_API_URL ||
+    (process.env.VERCEL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000')
 
   if (!process.env.PAYLOAD_API_URL) {
     console.warn(`PAYLOAD_API_URL not set, falling back to ${apiUrl}`)
@@ -77,7 +89,11 @@ export const createMockEdgePayload = (): PayloadInstance => {
  * @returns Mocked payload instance
  */
 export const createMockNodePayload = (): PayloadInstance => {
-  const apiUrl = process.env.PAYLOAD_API_URL || (process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+  const apiUrl =
+    process.env.PAYLOAD_API_URL ||
+    (process.env.VERCEL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000')
 
   if (!process.env.PAYLOAD_API_URL) {
     console.warn(`PAYLOAD_API_URL not set, falling back to ${apiUrl}`)

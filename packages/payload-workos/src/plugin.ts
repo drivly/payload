@@ -5,7 +5,10 @@ import { WorkOSClient } from './lib/workos-client'
 /**
  * Create endpoint handlers for WorkOS integration
  */
-const createEndpointHandlers = (workosClient: WorkOSClient, config: WorkOSPluginConfig) => {
+const createEndpointHandlers = (
+  workosClient: WorkOSClient,
+  config: WorkOSPluginConfig
+) => {
   const handlers: Record<string, any> = {}
 
   if (config.features?.sso) {
@@ -150,7 +153,8 @@ export const workosPlugin = (pluginConfig: WorkOSPluginConfig = {}) => {
       ...(config.features?.magicAuth
         ? [
             {
-              path: config.magicAuth?.callbackPath || '/api/workos/magic/callback',
+              path:
+                config.magicAuth?.callbackPath || '/api/workos/magic/callback',
               method: 'get',
               handler: handlers.magicAuthCallback,
             },

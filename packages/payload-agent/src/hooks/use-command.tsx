@@ -11,7 +11,7 @@ export const useCommand = () => {
         open(!isOpen)
       }
     },
-    [isOpen, open],
+    [isOpen, open]
   )
 
   useEffect(() => {

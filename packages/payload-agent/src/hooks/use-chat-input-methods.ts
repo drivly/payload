@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useChatInput, useChatStatus } from '../components/store/context'
 import type { AttachmentFile } from '../components/ui/file-preview'
-import { generateImageThumbnail, handleFileSelection } from '../lib/file-handlers'
+import {
+  generateImageThumbnail,
+  handleFileSelection,
+} from '../lib/file-handlers'
 
 export const useChatInputMethods = () => {
   const { input, handleSubmit } = useChatInput()
@@ -42,43 +45,46 @@ export const useChatInputMethods = () => {
         submitForm()
       }
     },
-    [submitForm],
+    [submitForm]
   )
 
-  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files
-    if (!selectedFiles || selectedFiles.length === 0) return
+  const handleFileChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const selectedFiles = e.target.files
+      if (!selectedFiles || selectedFiles.length === 0) return
 
-    // Process selected files
-    const { valid, invalid } = handleFileSelection(selectedFiles)
+      // Process selected files
+      const { valid, invalid } = handleFileSelection(selectedFiles)
 
-    if (invalid.length > 0) {
-      console.warn('Some files were not valid and were skipped:', invalid)
-    }
+      if (invalid.length > 0) {
+        console.warn('Some files were not valid and were skipped:', invalid)
+      }
 
-    setFiles(selectedFiles)
+      setFiles(selectedFiles)
 
-    const processedFiles = await Promise.all(
-      valid.map(async (file) => {
-        if (file.type === 'image') {
-          try {
-            const thumbnailUrl = await generateImageThumbnail(file.file)
-            return {
-              ...file,
-              thumbnailUrl,
-              url: thumbnailUrl,
-            } as AttachmentFile
-          } catch (error) {
-            console.error('Failed to generate thumbnail', error)
+      const processedFiles = await Promise.all(
+        valid.map(async (file) => {
+          if (file.type === 'image') {
+            try {
+              const thumbnailUrl = await generateImageThumbnail(file.file)
+              return {
+                ...file,
+                thumbnailUrl,
+                url: thumbnailUrl,
+              } as AttachmentFile
+            } catch (error) {
+              console.error('Failed to generate thumbnail', error)
+            }
           }
-        }
-        return file
-      }),
-    )
+          return file
+        })
+      )
 
-    // Update attachments state with our processed files
-    setAttachments((prev) => [...prev, ...processedFiles])
-  }, [])
+      // Update attachments state with our processed files
+      setAttachments((prev) => [...prev, ...processedFiles])
+    },
+    []
+  )
 
   const removeAttachment = useCallback(
     (id: string) => {
@@ -103,7 +109,7 @@ export const useChatInputMethods = () => {
         setFiles(dt.files)
       }
     },
-    [attachments],
+    [attachments]
   )
 
   return useMemo(
@@ -117,6 +123,15 @@ export const useChatInputMethods = () => {
       handleFileChange,
       removeAttachment,
     }),
-    [attachments, disabled, fileInputRef, textareaRef, submitForm, handleKeyDown, handleFileChange, removeAttachment],
+    [
+      attachments,
+      disabled,
+      fileInputRef,
+      textareaRef,
+      submitForm,
+      handleKeyDown,
+      handleFileChange,
+      removeAttachment,
+    ]
   )
 }

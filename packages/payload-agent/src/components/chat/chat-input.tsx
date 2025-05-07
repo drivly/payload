@@ -1,6 +1,11 @@
 import { Button } from '../ui/button'
 import { cn } from '../../lib/utils'
-import { PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea } from '../ui/prompt-input'
+import {
+  PromptInput,
+  PromptInputAction,
+  PromptInputActions,
+  PromptInputTextarea,
+} from '../ui/prompt-input'
 import { ArrowUp, CircleStop, Paperclip } from 'lucide-react'
 import React, { Fragment, useCallback } from 'react'
 import { useChatInputMethods } from '../../hooks'
@@ -13,7 +18,16 @@ export function ChatInput() {
   const { isLoading, stop } = useChatStatus()
   const { messages } = useChatMessages()
 
-  const { attachments, disabled, fileInputRef, textareaRef, handleKeyDown, handleFileChange, removeAttachment, submitForm } = useChatInputMethods()
+  const {
+    attachments,
+    disabled,
+    fileInputRef,
+    textareaRef,
+    handleKeyDown,
+    handleFileChange,
+    removeAttachment,
+    submitForm,
+  } = useChatInputMethods()
 
   const handleInputChangeWrapper = useCallback(
     (value: string) => {
@@ -23,14 +37,24 @@ export function ChatInput() {
 
       handleInputChange(syntheticEvent)
     },
-    [handleInputChange],
+    [handleInputChange]
   )
 
   return (
     <Fragment>
-      {messages.length === 0 && attachments.length === 0 && <ChatSuggestions append={append} />}
+      {messages.length === 0 && attachments.length === 0 && (
+        <ChatSuggestions append={append} />
+      )}
       <form className='font-geist border-border bg-background border-t dark:bg-black'>
-        <input type='file' ref={fileInputRef} className='sr-only' onChange={handleFileChange} multiple accept='.png, .jpg, .jpeg, .pdf' tabIndex={-1} />
+        <input
+          type='file'
+          ref={fileInputRef}
+          className='sr-only'
+          onChange={handleFileChange}
+          multiple
+          accept='.png, .jpg, .jpeg, .pdf'
+          tabIndex={-1}
+        />
         <FilePreview attachments={attachments} onRemove={removeAttachment} />
         <PromptInput
           value={input}
@@ -48,7 +72,11 @@ export function ChatInput() {
             autoFocus
           />
           <PromptInputActions className='items-center justify-between gap-[4px] px-2 py-1.5'>
-            <PromptInputAction delayDuration={0} className='duration-0 data-[state=closed]:duration-0' tooltip='Attach files'>
+            <PromptInputAction
+              delayDuration={0}
+              className='duration-0 data-[state=closed]:duration-0'
+              tooltip='Attach files'
+            >
               <Button
                 type='button'
                 variant='ghost'
@@ -64,22 +92,29 @@ export function ChatInput() {
                 <Paperclip className='!h-[16px] !w-[16px]' />
               </Button>
             </PromptInputAction>
-            <PromptInputAction tooltip={isLoading ? 'Stop message' : 'Send message'}>
+            <PromptInputAction
+              tooltip={isLoading ? 'Stop message' : 'Send message'}
+            >
               {isLoading ? (
                 <Button
                   aria-label='Stop message'
                   className={cn(
                     'border-input/90 text-primary h-[28px] w-[28px] cursor-pointer rounded-md border bg-[#f4f4f5] px-0 py-0 transition-colors has-[>svg]:px-0 dark:bg-[#1f1f22]',
                     {
-                      'text-primary-foreground bg-[#18181b] dark:bg-white': isLoading,
-                    },
+                      'text-primary-foreground bg-[#18181b] dark:bg-white':
+                        isLoading,
+                    }
                   )}
                   onClick={(event) => {
                     event.preventDefault()
                     stop()
                   }}
                 >
-                  <CircleStop absoluteStrokeWidth strokeWidth={2.5} className='!h-[16px] !w-[16px]' />
+                  <CircleStop
+                    absoluteStrokeWidth
+                    strokeWidth={2.5}
+                    className='!h-[16px] !w-[16px]'
+                  />
                 </Button>
               ) : (
                 <Button
@@ -88,8 +123,9 @@ export function ChatInput() {
                   className={cn(
                     'border-input/90 text-primary h-[28px] w-[28px] cursor-pointer rounded-md border bg-[#f4f4f5] px-0 py-0 transition-colors has-[>svg]:px-0 dark:bg-[#1f1f22]',
                     {
-                      'text-primary-foreground bg-[#18181b] dark:bg-white': input.trim() || attachments.length > 0,
-                    },
+                      'text-primary-foreground bg-[#18181b] dark:bg-white':
+                        input.trim() || attachments.length > 0,
+                    }
                   )}
                   disabled={input.trim() === '' && attachments.length === 0}
                   onClick={(event) => {
@@ -97,7 +133,11 @@ export function ChatInput() {
                     submitForm()
                   }}
                 >
-                  <ArrowUp absoluteStrokeWidth strokeWidth={2.5} className='!h-[16px] !w-[16px]' />
+                  <ArrowUp
+                    absoluteStrokeWidth
+                    strokeWidth={2.5}
+                    className='!h-[16px] !w-[16px]'
+                  />
                 </Button>
               )}
             </PromptInputAction>

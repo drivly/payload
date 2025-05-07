@@ -11,7 +11,11 @@ interface ScrollButtonProps {
   className?: string
 }
 
-export function ScrollButton({ containerRef, scrollRef, className }: ScrollButtonProps) {
+export function ScrollButton({
+  containerRef,
+  scrollRef,
+  className,
+}: ScrollButtonProps) {
   const [showButton, setShowButton] = useState(false)
 
   useEffect(() => {
@@ -20,7 +24,9 @@ export function ScrollButton({ containerRef, scrollRef, className }: ScrollButto
 
     const handleScroll = () => {
       if (!container) return
-      const isScrolledToBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 100
+      const isScrolledToBottom =
+        container.scrollHeight - container.scrollTop <=
+        container.clientHeight + 100
       setShowButton(!isScrolledToBottom)
     }
 
@@ -48,7 +54,10 @@ export function ScrollButton({ containerRef, scrollRef, className }: ScrollButto
   return (
     <Button
       onClick={scrollToBottom}
-      className={cn('bg-background flex h-8 w-8 items-center justify-center rounded-full border p-0 shadow-md', className)}
+      className={cn(
+        'bg-background flex h-8 w-8 items-center justify-center rounded-full border p-0 shadow-md',
+        className
+      )}
       aria-label='Scroll to bottom'
     >
       <ArrowDown className='h-4 w-4' />

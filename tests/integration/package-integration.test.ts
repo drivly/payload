@@ -6,9 +6,11 @@ describe('Package Integration', () => {
   test('All packages have correct dependencies', () => {
     const packagesDir = path.resolve(process.cwd(), 'packages')
     const packages = fs.readdirSync(packagesDir)
-    
-    packages.forEach(pkg => {
-      expect(fs.existsSync(path.join(packagesDir, pkg, 'package.json'))).toBe(true)
+
+    packages.forEach((pkg) => {
+      expect(fs.existsSync(path.join(packagesDir, pkg, 'package.json'))).toBe(
+        true
+      )
     })
   })
 })

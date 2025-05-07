@@ -21,7 +21,9 @@ export const ChatBot = async ({
   getAuthResult,
   requireAuth = !!getAuthResult,
 }: DefaultChatOptions) => {
-  const authResult = getAuthResult ? await getAuthResult() : { user: null, permissions: [] }
+  const authResult = getAuthResult
+    ? await getAuthResult()
+    : { user: null, permissions: [] }
 
   if (requireAuth && !authResult?.user) return children
 

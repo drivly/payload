@@ -23,7 +23,12 @@ export interface ChatMessageProps {
   attachments: UIMessage['experimental_attachments']
 }
 
-export const ChatMessage = ({ chatId, attachments, parts, role }: ChatMessageProps) => {
+export const ChatMessage = ({
+  chatId,
+  attachments,
+  parts,
+  role,
+}: ChatMessageProps) => {
   const { user } = useModalUser()
   const { config } = useModalConfig()
   const { error, reload } = useChatMessages()
@@ -43,7 +48,13 @@ export const ChatMessage = ({ chatId, attachments, parts, role }: ChatMessagePro
         className='size-7 bg-transparent font-bold'
       />
 
-      <motion.div initial={{ y: 5, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className={cn('text-primary flex max-w-[90%] flex-1 flex-col space-y-3')}>
+      <motion.div
+        initial={{ y: 5, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className={cn(
+          'text-primary flex max-w-[90%] flex-1 flex-col space-y-3'
+        )}
+      >
         {parts.map((part, index) => {
           switch (part.type) {
             case 'text': {
@@ -54,7 +65,9 @@ export const ChatMessage = ({ chatId, attachments, parts, role }: ChatMessagePro
                       {part.text}
                     </Markdown>
                   ) : (
-                    <MessageContent className='text-primary bg-transparent p-0 text-[14px] leading-[24px]'>{part.text}</MessageContent>
+                    <MessageContent className='text-primary bg-transparent p-0 text-[14px] leading-[24px]'>
+                      {part.text}
+                    </MessageContent>
                   )}
 
                   {attachments?.map((attachment, index) => (
@@ -64,7 +77,11 @@ export const ChatMessage = ({ chatId, attachments, parts, role }: ChatMessagePro
                       url={attachment.url}
                       thumbnailUrl={attachment.url}
                       name={attachment.name || ''}
-                      type={attachment.contentType?.includes('image') ? 'image' : 'pdf'}
+                      type={
+                        attachment.contentType?.includes('image')
+                          ? 'image'
+                          : 'pdf'
+                      }
                       size={0}
                       className='mt-3'
                     />
@@ -81,7 +98,10 @@ export const ChatMessage = ({ chatId, attachments, parts, role }: ChatMessagePro
   )
 }
 
-function toolLoadingMessage<TArgs extends Record<string, unknown>>(toolName: string, args: TArgs) {
+function toolLoadingMessage<TArgs extends Record<string, unknown>>(
+  toolName: string,
+  args: TArgs
+) {
   switch (toolName) {
     case 'getDocument':
       return `Getting document information for ${args.id} from ${args.collection}`
@@ -103,8 +123,14 @@ function toolLoadingMessage<TArgs extends Record<string, unknown>>(toolName: str
 function ErrorMessage({ onReload }: { onReload: () => void }) {
   return (
     <div className='mt-3 flex flex-col items-start justify-start gap-2'>
-      <p className='text-muted-foreground text-center text-[14px] leading-[24px] font-medium'>Something went wrong. Please try again.</p>
-      <Button onClick={onReload} className='border-border border-2 outline-none' variant='default'>
+      <p className='text-muted-foreground text-center text-[14px] leading-[24px] font-medium'>
+        Something went wrong. Please try again.
+      </p>
+      <Button
+        onClick={onReload}
+        className='border-border border-2 outline-none'
+        variant='default'
+      >
         Reload
       </Button>
     </div>

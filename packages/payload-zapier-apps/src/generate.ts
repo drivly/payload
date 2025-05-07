@@ -19,7 +19,9 @@ async function getCollections(collectionsPath?: string) {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
 
-    const resolvedPath = collectionsPath || path.resolve(__dirname, '../../../collections/index.js')
+    const resolvedPath =
+      collectionsPath ||
+      path.resolve(__dirname, '../../../collections/index.js')
     const collectionsModule = await import(resolvedPath)
     return collectionsModule.collections || []
   } catch (error) {
@@ -29,13 +31,17 @@ async function getCollections(collectionsPath?: string) {
 }
 
 // Main function to generate Zapier apps
-export async function main(options: { collectionsPath?: string; outputDir?: string } = {}) {
+export async function main(
+  options: { collectionsPath?: string; outputDir?: string } = {}
+) {
   try {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
 
     // Ensure output directories exist
-    const outputDir = options.outputDir ? path.resolve(options.outputDir) : path.resolve(__dirname, '../apps')
+    const outputDir = options.outputDir
+      ? path.resolve(options.outputDir)
+      : path.resolve(__dirname, '../apps')
 
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true })
@@ -118,7 +124,10 @@ export async function main(options: { collectionsPath?: string; outputDir?: stri
         private: true,
       }
 
-      fs.writeFileSync(path.resolve(collectionDir, 'package.json'), JSON.stringify(packageJson, null, 2))
+      fs.writeFileSync(
+        path.resolve(collectionDir, 'package.json'),
+        JSON.stringify(packageJson, null, 2)
+      )
 
       // Generate .gitignore
       const gitignore = `
@@ -141,7 +150,10 @@ node_modules/
 .env.test.local
 .env.production.local
 `
-      fs.writeFileSync(path.resolve(collectionDir, '.gitignore'), gitignore.trim())
+      fs.writeFileSync(
+        path.resolve(collectionDir, '.gitignore'),
+        gitignore.trim()
+      )
 
       // Generate .zapierapprc
       const zapierAppRc = {
@@ -149,7 +161,10 @@ node_modules/
         key: `ai-primitives-${collectionSlug}`,
       }
 
-      fs.writeFileSync(path.resolve(collectionDir, '.zapierapprc'), JSON.stringify(zapierAppRc, null, 2))
+      fs.writeFileSync(
+        path.resolve(collectionDir, '.zapierapprc'),
+        JSON.stringify(zapierAppRc, null, 2)
+      )
 
       console.log(`Generated Zapier app for ${collectionName}`)
     }

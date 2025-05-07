@@ -29,7 +29,11 @@ interface FilePreviewProps {
   className?: string
 }
 
-export function FilePreview({ attachments, onRemove, className }: FilePreviewProps) {
+export function FilePreview({
+  attachments,
+  onRemove,
+  className,
+}: FilePreviewProps) {
   if (attachments.length === 0) return null
 
   return (
@@ -40,7 +44,10 @@ export function FilePreview({ attachments, onRemove, className }: FilePreviewPro
           animate={{ height: 'auto', opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
-          className={cn('bg-accent dark:bg-background w-full overflow-hidden', className)}
+          className={cn(
+            'bg-accent dark:bg-background w-full overflow-hidden',
+            className
+          )}
         >
           <div className='flex items-center gap-[12px] overflow-x-auto p-[12px] transition-opacity'>
             {attachments.map((attachment) => (

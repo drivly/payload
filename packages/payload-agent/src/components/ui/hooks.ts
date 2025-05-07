@@ -2,7 +2,15 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 
-export function useOutsideClick({ isOpen, open, withOutsideClick = true }: { isOpen: boolean; open: (value: boolean) => void; withOutsideClick?: boolean }) {
+export function useOutsideClick({
+  isOpen,
+  open,
+  withOutsideClick = true,
+}: {
+  isOpen: boolean
+  open: (value: boolean) => void
+  withOutsideClick?: boolean
+}) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -52,7 +60,9 @@ export function createRequiredContext<T>(displayName: string) {
   function useContext(props?: any) {
     const context = React.useContext(Context)
     if (context === undefined) {
-      throw new Error(`use${displayName} must be used within a ${displayName}Provider`)
+      throw new Error(
+        `use${displayName} must be used within a ${displayName}Provider`
+      )
     }
     return context
   }

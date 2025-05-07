@@ -7,7 +7,9 @@ import { createPayloadClient } from './createPayloadClient'
  * @param config - REST client configuration
  * @returns A proxy object for database operations via REST API
  */
-export const createRestPayloadClient = (config: RestPayloadClientConfig): PayloadDB => {
+export const createRestPayloadClient = (
+  config: RestPayloadClientConfig
+): PayloadDB => {
   // Use payload-rest-client to create a REST client
   const restClient = createPayloadRestAPIClient({
     url: config.apiUrl,

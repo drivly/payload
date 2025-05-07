@@ -48,7 +48,11 @@ export type TaskConfig = Task | Workflow
 /**
  * Hook types available in Payload collections
  */
-export type HookType = 'beforeChange' | 'afterChange' | 'beforeDelete' | 'afterDelete'
+export type HookType =
+  | 'beforeChange'
+  | 'afterChange'
+  | 'beforeDelete'
+  | 'afterDelete'
 
 /**
  * Configuration for hooks in a specific collection

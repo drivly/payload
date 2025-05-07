@@ -12,9 +12,21 @@ export interface PayloadDBCollection {
   findOne: (query?: CollectionQuery) => Promise<any> // Returns first item or null
   get: (id: string, query?: CollectionQuery) => Promise<any> // Alias for findById
   create: (data: CollectionData, query?: CollectionQuery) => Promise<any>
-  update: (id: string, data: CollectionData, query?: CollectionQuery) => Promise<any>
-  upsert: (id: string, data: CollectionData, query?: CollectionQuery) => Promise<any>
-  set: (id: string, data: CollectionData, query?: CollectionQuery) => Promise<any> // Alias for update
+  update: (
+    id: string,
+    data: CollectionData,
+    query?: CollectionQuery
+  ) => Promise<any>
+  upsert: (
+    id: string,
+    data: CollectionData,
+    query?: CollectionQuery
+  ) => Promise<any>
+  set: (
+    id: string,
+    data: CollectionData,
+    query?: CollectionQuery
+  ) => Promise<any> // Alias for update
   delete: (id: string, query?: CollectionQuery) => Promise<any>
 }
 
@@ -43,4 +55,7 @@ export interface ApiRequest {
 }
 
 // Generic handler type
-export type ApiHandler<T = any> = (req: ApiRequest, ctx: ApiContext) => Promise<T> | T
+export type ApiHandler<T = any> = (
+  req: ApiRequest,
+  ctx: ApiContext
+) => Promise<T> | T

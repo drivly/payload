@@ -13,7 +13,8 @@ const thumbnailVariants = cva('flex-shrink-0', {
     },
     size: {
       sm: '[&>div]:h-[24px] [&>div]:w-[24px] [&_svg]:h-[24px] [&_svg]:w-[24px]',
-      default: '[&>div]:h-[32px] [&>div]:w-[32px] [&_svg]:h-[32px] [&_svg]:w-[32px]',
+      default:
+        '[&>div]:h-[32px] [&>div]:w-[32px] [&_svg]:h-[32px] [&_svg]:w-[32px]',
       lg: '[&>div]:h-[40px] [&>div]:w-[40px] [&_svg]:h-[40px] [&_svg]:w-[40px]',
     },
   },
@@ -33,7 +34,17 @@ interface ThumbnailProps extends VariantProps<typeof thumbnailVariants> {
   onImageError?: () => void
 }
 
-export const Thumbnail = ({ showContent, error, type, thumbnailUrl, url, name, onImageError, variant, size }: ThumbnailProps) => {
+export const Thumbnail = ({
+  showContent,
+  error,
+  type,
+  thumbnailUrl,
+  url,
+  name,
+  onImageError,
+  variant,
+  size,
+}: ThumbnailProps) => {
   return (
     <div className={cn(thumbnailVariants({ variant, size }))}>
       {!showContent ? (

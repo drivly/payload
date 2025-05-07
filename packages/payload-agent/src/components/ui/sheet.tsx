@@ -18,18 +18,38 @@ interface SheetContentProps extends React.HTMLAttributes<HTMLDivElement> {
   overlay?: boolean
 }
 
-export function SheetContent({ className, children, closeButton = true, overlay = true, ...props }: SheetContentProps) {
+export function SheetContent({
+  className,
+  children,
+  closeButton = true,
+  overlay = true,
+  ...props
+}: SheetContentProps) {
   return (
-    <div className={cn('bg-background fixed inset-y-0 right-0 z-50 flex max-w-full flex-col border-l shadow-lg', className)} {...props}>
+    <div
+      className={cn(
+        'bg-background fixed inset-y-0 right-0 z-50 flex max-w-full flex-col border-l shadow-lg',
+        className
+      )}
+      {...props}
+    >
       {children}
     </div>
   )
 }
 
-export function SheetTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
+export function SheetTitle({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLHeadingElement>) {
   return <h2 className={cn('text-lg font-semibold', className)} {...props} />
 }
 
-export function SheetDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn('text-muted-foreground text-sm', className)} {...props} />
+export function SheetDescription({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p className={cn('text-muted-foreground text-sm', className)} {...props} />
+  )
 }

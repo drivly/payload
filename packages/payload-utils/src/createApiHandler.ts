@@ -8,8 +8,15 @@ import { createPayloadClient } from './createPayloadClient'
  * @param handler - The API handler function
  * @returns Handler function compatible with different environments
  */
-export const createApiHandler = <T = any>(getPayload: (options: any) => Promise<any>, configPromise: any, handler: ApiHandler<T>) => {
-  return async (request: ApiRequest, params: Record<string, string | string[]>) => {
+export const createApiHandler = <T = any>(
+  getPayload: (options: any) => Promise<any>,
+  configPromise: any,
+  handler: ApiHandler<T>
+) => {
+  return async (
+    request: ApiRequest,
+    params: Record<string, string | string[]>
+  ) => {
     try {
       // Get Payload instance
       const payload = await getPayload({
@@ -33,7 +40,8 @@ export const createApiHandler = <T = any>(getPayload: (options: any) => Promise<
       const url = new URL(request.url)
       const path = url.pathname
       const domain = url.hostname
-      const origin = url.protocol + '//' + domain + (url.port ? ':' + url.port : '')
+      const origin =
+        url.protocol + '//' + domain + (url.port ? ':' + url.port : '')
 
       // Create a db proxy object for more concise collection operations
       const db = createPayloadClient(payload)
@@ -57,12 +65,19 @@ export const createApiHandler = <T = any>(getPayload: (options: any) => Promise<
       console.error('API Error:', error)
 
       // Return error details
-      const status = error instanceof Error && 'statusCode' in error ? (error as any).statusCode : 500
+      const status =
+        error instanceof Error && 'statusCode' in error
+          ? (error as any).statusCode
+          : 500
       return {
         error: {
-          message: error instanceof Error ? error.message : 'Internal Server Error',
+          message:
+            error instanceof Error ? error.message : 'Internal Server Error',
           status,
-          ...(process.env.NODE_ENV === 'development' && { stack: error instanceof Error ? error.stack?.split('\n') : undefined }),
+          ...(process.env.NODE_ENV === 'development' && {
+            stack:
+              error instanceof Error ? error.stack?.split('\n') : undefined,
+          }),
         },
       }
     }

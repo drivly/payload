@@ -8,17 +8,25 @@ import { createApiHandler } from '../createApiHandler'
  * @param handler - The API handler function
  * @returns Cloudflare Workers-compatible handler
  */
-export const createCloudflareApiHandler = <T = any>(getPayload: (options: any) => Promise<any>, configPromise: any, handler: ApiHandler<T>) => {
+export const createCloudflareApiHandler = <T = any>(
+  getPayload: (options: any) => Promise<any>,
+  configPromise: any,
+  handler: ApiHandler<T>
+) => {
   const apiHandler = createApiHandler(getPayload, configPromise, handler)
 
-  return async (request: Request, params: Record<string, string | string[]> = {}) => {
+  return async (
+    request: Request,
+    params: Record<string, string | string[]> = {}
+  ) => {
     const result = await apiHandler(request, params)
 
     return new Response(
       JSON.stringify({
         api: {
           name: new URL(request.url).hostname,
-          description: 'Economically valuable work delivered through simple APIs',
+          description:
+            'Economically valuable work delivered through simple APIs',
           url: request.url,
           home: new URL(request.url).origin,
           login: new URL(request.url).origin + '/login',
@@ -35,7 +43,7 @@ export const createCloudflareApiHandler = <T = any>(getPayload: (options: any) =
         headers: {
           'content-type': 'application/json; charset=utf-8',
         },
-      },
+      }
     )
   }
 }

@@ -19,7 +19,17 @@ export interface AttachmentProps {
   compact?: boolean
 }
 
-export function Attachment({ id, url, thumbnailUrl, name, type, size, onRemove, className, compact = false }: AttachmentProps) {
+export function Attachment({
+  id,
+  url,
+  thumbnailUrl,
+  name,
+  type,
+  size,
+  onRemove,
+  className,
+  compact = false,
+}: AttachmentProps) {
   const [showContent, setShowContent] = useState(false)
   const [error, setError] = useState(false)
 
@@ -38,14 +48,25 @@ export function Attachment({ id, url, thumbnailUrl, name, type, size, onRemove, 
   // compact version
   if (compact) {
     return (
-      <PromptInputAction delayDuration={0} className='rounded-sm bg-black p-1 dark:bg-white' tooltip='File preview'>
+      <PromptInputAction
+        delayDuration={0}
+        className='rounded-sm bg-black p-1 dark:bg-white'
+        tooltip='File preview'
+      >
         <div
           className={cn(
             'group bg-card hover:bg-accent border-border relative flex h-[40px] w-[150px] cursor-pointer items-center gap-[8px] rounded-sm border py-[4px] pr-[12px] pl-[4px] transition-colors duration-200 ease-out dark:bg-[#141415] hover:dark:bg-[#1f1f22]',
-            className,
+            className
           )}
         >
-          <Thumbnail showContent={showContent} error={error} type={type} thumbnailUrl={thumbnailUrl} url={url} name={name} />
+          <Thumbnail
+            showContent={showContent}
+            error={error}
+            type={type}
+            thumbnailUrl={thumbnailUrl}
+            url={url}
+            name={name}
+          />
           <FileInfo title={name} fileSize={size || 0} />
 
           {/* X button */}
@@ -71,10 +92,18 @@ export function Attachment({ id, url, thumbnailUrl, name, type, size, onRemove, 
     <div
       className={cn(
         'group bg-card hover:bg-accent border-border relative flex h-[56px] w-[210px] cursor-pointer items-center gap-[8px] rounded-sm border py-[8px] pr-[12px] pl-[8px] transition-colors duration-200 ease-out dark:bg-[#141415] hover:dark:bg-[#1f1f22]',
-        className,
+        className
       )}
     >
-      <Thumbnail showContent={showContent} error={error} type={type} thumbnailUrl={thumbnailUrl} url={url} name={name} size='lg' />
+      <Thumbnail
+        showContent={showContent}
+        error={error}
+        type={type}
+        thumbnailUrl={thumbnailUrl}
+        url={url}
+        name={name}
+        size='lg'
+      />
       <FileInfo title={name} size='md' contentType={type} />
     </div>
   )

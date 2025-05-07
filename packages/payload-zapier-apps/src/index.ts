@@ -21,7 +21,9 @@ export interface ZapierGeneratorOptions {
  * @param options Configuration options for the generator
  * @returns Promise that resolves when generation is complete
  */
-export async function generateZapierApps(options: ZapierGeneratorOptions = {}): Promise<void> {
+export async function generateZapierApps(
+  options: ZapierGeneratorOptions = {}
+): Promise<void> {
   const { main } = await import('./generate.js')
   await main(options)
 }

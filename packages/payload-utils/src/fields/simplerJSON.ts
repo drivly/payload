@@ -22,7 +22,8 @@ try {
   console.warn('JSON5 not available, falling back to JSON')
   json5 = {
     parse: JSON.parse,
-    stringify: (obj: unknown, options?: unknown) => JSON.stringify(obj, null, 2),
+    stringify: (obj: unknown, options?: unknown) =>
+      JSON.stringify(obj, null, 2),
   }
 }
 
@@ -117,7 +118,10 @@ export const simplerJSON = ({
                   })
                 }
               } catch (error) {
-                console.error(`Error converting JSON to ${language.toUpperCase()}:`, error)
+                console.error(
+                  `Error converting JSON to ${language.toUpperCase()}:`,
+                  error
+                )
                 return ''
               }
             }

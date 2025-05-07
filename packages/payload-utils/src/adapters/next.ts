@@ -9,10 +9,17 @@ import { createApiHandler } from '../createApiHandler'
  * @param handler - The API handler function
  * @returns NextJS-compatible handler
  */
-export const createNextApiHandler = <T = any>(getPayload: (options: any) => Promise<any>, configPromise: any, handler: ApiHandler<T>) => {
+export const createNextApiHandler = <T = any>(
+  getPayload: (options: any) => Promise<any>,
+  configPromise: any,
+  handler: ApiHandler<T>
+) => {
   const apiHandler = createApiHandler(getPayload, configPromise, handler)
 
-  return async (req: NextRequest, context: { params: Promise<Record<string, string | string[]>> }) => {
+  return async (
+    req: NextRequest,
+    context: { params: Promise<Record<string, string | string[]>> }
+  ) => {
     const params = await context.params
     const result = await apiHandler(req, params)
 
@@ -20,7 +27,8 @@ export const createNextApiHandler = <T = any>(getPayload: (options: any) => Prom
       {
         api: {
           name: new URL(req.url).hostname,
-          description: 'Economically valuable work delivered through simple APIs',
+          description:
+            'Economically valuable work delivered through simple APIs',
           url: req.url,
           home: new URL(req.url).origin,
           login: new URL(req.url).origin + '/login',
@@ -33,7 +41,7 @@ export const createNextApiHandler = <T = any>(getPayload: (options: any) => Prom
         ...result,
         user: {},
       },
-      { headers: { 'content-type': 'application/json; charset=utf-8' } },
+      { headers: { 'content-type': 'application/json; charset=utf-8' } }
     )
   }
 }

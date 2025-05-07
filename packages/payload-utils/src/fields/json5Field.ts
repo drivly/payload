@@ -18,9 +18,11 @@ type SimplerJSONOptions = {
   hideJsonField?: boolean
 }
 
-export const json5Field = (options: Omit<SimplerJSONOptions, 'defaultFormat'> = {}) => 
+export const json5Field = (
+  options: Omit<SimplerJSONOptions, 'defaultFormat'> = {}
+) =>
   simplerJSON({
     ...options,
     defaultFormat: 'json5',
-    codeFieldName: options.codeFieldName || 'json5Data'
+    codeFieldName: options.codeFieldName || 'json5Data',
   })

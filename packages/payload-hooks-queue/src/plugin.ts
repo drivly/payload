@@ -1,5 +1,13 @@
 import type { CollectionConfig, Config, Plugin } from 'payload'
-import { HookHandlerOptions, TaskConfig, HookConfig, CollectionHookConfig, HookQueuePluginConfig, HookType, CollectionHookPattern } from './types'
+import {
+  HookHandlerOptions,
+  TaskConfig,
+  HookConfig,
+  CollectionHookConfig,
+  HookQueuePluginConfig,
+  HookType,
+  CollectionHookPattern,
+} from './types'
 
 /**
  * Helper to normalize hook config to standard format
@@ -11,12 +19,19 @@ const normalizeHookConfig = (config: HookConfig): CollectionHookConfig => {
     }
   } else if (Array.isArray(config)) {
     return {
-      afterChange: config.map((slug) => (typeof slug === 'string' ? { slug } : slug)),
+      afterChange: config.map((slug) =>
+        typeof slug === 'string' ? { slug } : slug
+      ),
     }
   } else {
     const result: CollectionHookConfig = {}
 
-    for (const hookType of ['beforeChange', 'afterChange', 'beforeDelete', 'afterDelete'] as const) {
+    for (const hookType of [
+      'beforeChange',
+      'afterChange',
+      'beforeDelete',
+      'afterDelete',
+    ] as const) {
       if (config[hookType]) {
         result[hookType] = config[hookType]!.map((item) => {
           if (typeof item === 'string') {
@@ -34,11 +49,15 @@ const normalizeHookConfig = (config: HookConfig): CollectionHookConfig => {
 /**
  * Normalize a collection.hook pattern value to a standard format
  */
-const normalizePatternValue = (value: string | TaskConfig | Array<string | TaskConfig>): Array<TaskConfig> => {
+const normalizePatternValue = (
+  value: string | TaskConfig | Array<string | TaskConfig>
+): Array<TaskConfig> => {
   if (typeof value === 'string') {
     return [{ slug: value }]
   } else if (Array.isArray(value)) {
-    return value.map((item) => (typeof item === 'string' ? { slug: item } : item))
+    return value.map((item) =>
+      typeof item === 'string' ? { slug: item } : item
+    )
   } else {
     return [value]
   }
@@ -47,7 +66,11 @@ const normalizePatternValue = (value: string | TaskConfig | Array<string | TaskC
 /**
  * Process a hook by running the associated task or function
  */
-const processHook = async (hooks: Array<string | TaskConfig> | undefined, options: HookHandlerOptions, payload: any) => {
+const processHook = async (
+  hooks: Array<string | TaskConfig> | undefined,
+  options: HookHandlerOptions,
+  payload: any
+) => {
   if (!hooks || !hooks.length) return
 
   await Promise.all(
@@ -102,18 +125,24 @@ const processHook = async (hooks: Array<string | TaskConfig> | undefined, option
           console.error(`Error running task/function ${slug}:`, error)
         }
       }
-    }),
+    })
   )
 }
 
 /**
  * Parse collection.hook pattern keys from config
  */
-const parsePatternKeys = (config: HookQueuePluginConfig): Record<string, CollectionHookConfig> => {
+const parsePatternKeys = (
+  config: HookQueuePluginConfig
+): Record<string, CollectionHookConfig> => {
   const result: Record<string, CollectionHookConfig> = {}
 
   for (const key in config) {
-    if (key === 'collections' || key === 'global' || key === 'excludeFromGlobal') {
+    if (
+      key === 'collections' ||
+      key === 'global' ||
+      key === 'excludeFromGlobal'
+    ) {
       continue
     }
 
@@ -121,7 +150,14 @@ const parsePatternKeys = (config: HookQueuePluginConfig): Record<string, Collect
     if (match) {
       const [, collection, hookType] = match
 
-      if (!['beforeChange', 'afterChange', 'beforeDelete', 'afterDelete'].includes(hookType)) {
+      if (
+        ![
+          'beforeChange',
+          'afterChange',
+          'beforeDelete',
+          'afterDelete',
+        ].includes(hookType)
+      ) {
         console.warn(`Invalid hook type in pattern: ${key}`)
         continue
       }
@@ -130,7 +166,9 @@ const parsePatternKeys = (config: HookQueuePluginConfig): Record<string, Collect
         result[collection] = {}
       }
 
-      result[collection][hookType as HookType] = normalizePatternValue(config[key as CollectionHookPattern])
+      result[collection][hookType as HookType] = normalizePatternValue(
+        config[key as CollectionHookPattern]
+      )
     }
   }
 
@@ -141,9 +179,13 @@ const parsePatternKeys = (config: HookQueuePluginConfig): Record<string, Collect
  * Creates a Payload plugin that allows queueing tasks or workflows
  * from collection hooks with a simple API
  */
-export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin => {
+export const createHooksQueuePlugin = (
+  config: HookQueuePluginConfig
+): Plugin => {
   return (incomingConfig: Config): Config => {
-    const globalHooks = config.global ? normalizeHookConfig(config.global) : undefined
+    const globalHooks = config.global
+      ? normalizeHookConfig(config.global)
+      : undefined
     const excludeFromGlobal = config.excludeFromGlobal || []
 
     const patternCollections = parsePatternKeys(config)
@@ -152,7 +194,9 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
 
     if (config.collections) {
       for (const collection in config.collections) {
-        mergedCollections[collection] = normalizeHookConfig(config.collections[collection])
+        mergedCollections[collection] = normalizeHookConfig(
+          config.collections[collection]
+        )
       }
     }
 
@@ -160,12 +204,21 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
       if (!mergedCollections[collection]) {
         mergedCollections[collection] = patternCollections[collection]
       } else {
-        for (const hookType of ['beforeChange', 'afterChange', 'beforeDelete', 'afterDelete'] as const) {
+        for (const hookType of [
+          'beforeChange',
+          'afterChange',
+          'beforeDelete',
+          'afterDelete',
+        ] as const) {
           if (patternCollections[collection][hookType]) {
             if (!mergedCollections[collection][hookType]) {
-              mergedCollections[collection][hookType] = patternCollections[collection][hookType]
+              mergedCollections[collection][hookType] =
+                patternCollections[collection][hookType]
             } else {
-              mergedCollections[collection][hookType] = [...(mergedCollections[collection][hookType] || []), ...(patternCollections[collection][hookType] || [])]
+              mergedCollections[collection][hookType] = [
+                ...(mergedCollections[collection][hookType] || []),
+                ...(patternCollections[collection][hookType] || []),
+              ]
             }
           }
         }
@@ -196,7 +249,15 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
           ...collection.hooks,
           beforeChange: [
             ...(collection.hooks?.beforeChange || []),
-            async ({ data, originalDoc, req }: { data: any; originalDoc: any; req: any }) => {
+            async ({
+              data,
+              originalDoc,
+              req,
+            }: {
+              data: any
+              originalDoc: any
+              req: any
+            }) => {
               if (collectionHooks?.beforeChange) {
                 await processHook(
                   collectionHooks.beforeChange,
@@ -207,7 +268,7 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
                     originalDoc,
                     req,
                   },
-                  req?.payload,
+                  req?.payload
                 )
               }
 
@@ -221,7 +282,7 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
                     originalDoc,
                     req,
                   },
-                  req?.payload,
+                  req?.payload
                 )
               }
 
@@ -230,7 +291,15 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
           ],
           afterChange: [
             ...(collection.hooks?.afterChange || []),
-            async ({ doc, previousDoc, req }: { doc: any; previousDoc: any; req: any }) => {
+            async ({
+              doc,
+              previousDoc,
+              req,
+            }: {
+              doc: any
+              previousDoc: any
+              req: any
+            }) => {
               if (collectionHooks?.afterChange) {
                 await processHook(
                   collectionHooks.afterChange,
@@ -241,7 +310,7 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
                     originalDoc: previousDoc,
                     req,
                   },
-                  req?.payload,
+                  req?.payload
                 )
               }
 
@@ -255,7 +324,7 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
                     originalDoc: previousDoc,
                     req,
                   },
-                  req?.payload,
+                  req?.payload
                 )
               }
 
@@ -274,7 +343,7 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
                     data: { id },
                     req,
                   },
-                  req?.payload,
+                  req?.payload
                 )
               }
 
@@ -287,7 +356,7 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
                     data: { id },
                     req,
                   },
-                  req?.payload,
+                  req?.payload
                 )
               }
             },
@@ -305,7 +374,7 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
                     originalDoc: doc,
                     req,
                   },
-                  req?.payload,
+                  req?.payload
                 )
               }
 
@@ -319,7 +388,7 @@ export const createHooksQueuePlugin = (config: HookQueuePluginConfig): Plugin =>
                     originalDoc: doc,
                     req,
                   },
-                  req?.payload,
+                  req?.payload
                 )
               }
             },
