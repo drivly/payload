@@ -1,0 +1,71 @@
+import eslint from '@eslint/js'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tsparser from '@typescript-eslint/parser'
+import base from './index.js'
+
+export default [
+  ...base,
+  {
+    files: ['**/*.ts', '**/*.tsx', '**/*.js'],
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    linterOptions: {
+      reportUnusedDisableDirectives: 'off',
+    },
+    languageOptions: {
+      parser: tsparser,
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        process: 'readonly',
+        FormData: 'readonly',
+        Blob: 'readonly',
+        fetch: 'readonly',
+        URL: 'readonly',
+        console: 'readonly',
+        Response: 'readonly',
+        RequestInit: 'readonly',
+        Request: 'readonly',
+        __dirname: 'readonly',
+        crypto: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        HTMLElement: 'readonly',
+        HTMLDivElement: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLTextAreaElement: 'readonly',
+        MouseEvent: 'readonly',
+        WheelEvent: 'readonly',
+        React: 'readonly',
+        requestAnimationFrame: 'readonly',
+        clearTimeout: 'readonly',
+        setTimeout: 'readonly',
+        ScrollBehavior: 'readonly',
+        require: 'readonly',
+        Thenable: 'readonly',
+        Headers: 'readonly',
+        TextEncoder: 'readonly',
+        Buffer: 'readonly',
+        CryptoKey: 'readonly',
+        BufferSource: 'readonly',
+        atob: 'readonly',
+        btoa: 'readonly',
+        File: 'readonly',
+        FileReader: 'readonly',
+        DOMParser: 'readonly',
+        HTMLInputElement: 'readonly',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      'no-case-declarations': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+      'report-unused-disable-directives': 'off',
+    },
+  },
+]

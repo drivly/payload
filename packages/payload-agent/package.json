@@ -60,6 +60,7 @@
     "esbuild-plugin-react18": "^0.2.6",
     "lucide-react": "^0.483.0",
     "tsconfig": "workspace:*",
+    "eslint-config": "workspace:*",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2"
   }

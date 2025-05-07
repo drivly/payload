@@ -30,6 +30,7 @@
     "payload": "^2.0.0",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",
-    "tsconfig": "0.0.0"
+    "tsconfig": "workspace:*",
+    "eslint-config": "workspace:*"
   }
 }
