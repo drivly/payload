@@ -8,3 +8,10 @@ export { createNodePayloadClient } from './adapters/node'
 export { createEdgePayloadClient } from './adapters/edge'
 
 export { createNodePayloadClient as createDefaultPayloadClient } from './adapters/node'
+
+export { 
+  detectDatabaseType, 
+  configureDatabaseAdapter,
+  type DatabaseType,
+  type DatabaseAdapterOptions
+} from './utils/db'
