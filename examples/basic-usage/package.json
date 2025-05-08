@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--no-deprecation payload build",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation payload dev",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "test": "vitest run",
