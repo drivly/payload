@@ -37,6 +37,7 @@
     "build": "pnpm clean && tsup --format esm --dts",
     "clean": "rimraf dist",
     "ci": "pnpm run clean && pnpm run build",
+    "lint": "eslint src/**/*.{ts,tsx}",
     "release": "pnpm run ci && pnpm publish",
     "typecheck": "tsc --noEmit"
   },
