@@ -18,7 +18,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: {
-      baseDir: path.resolve(dirname),
+      importMapFile: path.resolve(dirname, 'app/importMap.js'),
     },
   },
   collections: [Types, Nodes, Edges, Users],

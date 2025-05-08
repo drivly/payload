@@ -22,5 +22,10 @@
     "singleQuote": true,
     "semi": false,
     "trailingComma": "es5"
+  },
+  "pnpm": {
+    "overrides": {
+      "date-fns": "^4.1.0"
+    }
   }
 }
