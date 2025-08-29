@@ -39,7 +39,7 @@
     "@payloadcms/db-postgres": "^3.37.0",
     "@payloadcms/db-sqlite": "3.33.0",
     "eslint-config": "workspace:*",
-    "payload": "^3.33.0",
+    "payload": "^3.44.0",
     "tsconfig": "workspace:*",
     "tsup": "^7.2.0"
   },
