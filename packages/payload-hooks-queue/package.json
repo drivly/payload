@@ -23,7 +23,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "payload": "^3.33.0",
+    "payload": "^3.44.0",
     "eslint-config": "workspace:*",
     "tsconfig": "workspace:*",
     "tsup": "^8.0.0"

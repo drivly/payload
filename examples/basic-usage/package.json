@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.37.0",
-    "payload": "3.33.0"
+    "payload": "3.44.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
