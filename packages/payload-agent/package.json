@@ -46,7 +46,7 @@
     "zustand": "^5.0.3"
   },
   "peerDependencies": {
-    "ai": "^4.3.9",
+    "ai": "^5.0.52",
     "lucide-react": "^0.301.0",
     "next": "^14.0.0 || ^15.0.0",
     "payload": "^3.36.0",
@@ -58,7 +58,7 @@
     "@ai-sdk/react": "^1.2.12",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.0.3",
-    "ai": "^4.3.9",
+    "ai": "^5.0.52",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "esbuild-plugin-css-module": "^0.1.0",
